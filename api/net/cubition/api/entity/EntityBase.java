@@ -4,10 +4,12 @@ import net.cubition.api.world.Location;
 
 public class EntityBase {
 
+	/**
+	 * The current location of this entity
+	 * @getter {@link net.cubition.entity.EntityBase.getLocation}
+	 * @setter {@link net.cubition.entity.EntityBase.teleport(Location); net.cubition.entity.EntityBase.teleport(EntityBase)}
+	 */
 	private Location currentLocation;
-	
-	public int health;
-	public int maxhealth;
 	
 	/**
 	 * Spawn a new Entity of this type
@@ -19,16 +21,31 @@ public class EntityBase {
 		this.currentLocation = location;
 	}
 	
+	/**
+	 * Returns the current location of this entity
+	 * 
+	 * @return the current location
+	 */
 	public Location getLocation ()
 	{
 		return currentLocation;
 	}
 
+	/**
+	 * Teleports this entity to the given location
+	 * 
+	 * @param location the location to teleport to
+	 */
 	public void teleport (Location location)
 	{
 		this.currentLocation = location;
 	}
 	
+	/**
+	 * Teleports this entity to the given other entity
+	 * 
+	 * @param entity the entity to teleport this entity to
+	 */
 	public void teleport (EntityBase entity)
 	{
 		this.currentLocation = entity.getLocation();
