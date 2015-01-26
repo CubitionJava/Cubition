@@ -11,8 +11,8 @@ public interface BlockType {
 	 * use this formula:
 	 * 
 	 * [digState = time * digSpeed]
-	 * time > seconds
-	 * digSpeed > float~1
+	 * time is in seconds
+	 * digSpeed is more then float~1
 	 * 
 	 * @param tool the tool
 	 * @return the dig speed
