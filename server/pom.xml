@@ -12,5 +12,47 @@
 
     <artifactId>server</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>net.cubition</groupId>
+            <artifactId>api</artifactId>
+            <version>${version}</version>
+        </dependency>
+    </dependencies>
 
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.3</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <Implementation-Title>Server</Implementation-Title>
+                            <Implementation-Version>${project.version}</Implementation-Version>
+                            <Implementation-Vendor>The Cubition Team</Implementation-Vendor>
+                            <Implementation-Vendor-Id>net.cubition</Implementation-Vendor-Id>
+                            <Implementation-Url>http://cubition.net</Implementation-Url>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

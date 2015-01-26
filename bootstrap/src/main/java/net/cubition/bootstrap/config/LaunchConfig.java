@@ -20,7 +20,7 @@ public class LaunchConfig implements Serializable {
     /**
      * Provides a comment in the JSON file, helping the user with this LaunchConfig.
      */
-    private String _ = "This is the main configuration for the Bootstrap. " +
+    private String _c = "This is the main configuration for the Bootstrap. " +
             "More info about me can be found at http://cubition.net/...";
 
     /**
@@ -33,7 +33,7 @@ public class LaunchConfig implements Serializable {
      * Dependencies are automatically polled for this executable, if it includes such definitions in a .json
      * file with the same filename and location.
      */
-    private Resource type = new Resource("server", "cubition", Bootstrap.VERSION);
+    private Resource type = new Resource("server.jar", "cubition", Bootstrap.VERSION, Bootstrap.DEFAULT_RESOURCE_SERVER);
 
     /**
      * The 'mods' defines what mods are to be imported at runtime. Whether these are full blown games,
@@ -43,7 +43,7 @@ public class LaunchConfig implements Serializable {
      * file with the same filename and location.
      */
     private Resource[] mods = new Resource[]{
-            new Resource("essentials", "cubition", "LATEST")
+            new Resource("core.jar", "cubition", "LATEST", Bootstrap.DEFAULT_RESOURCE_SERVER)
     };
 
     /**
