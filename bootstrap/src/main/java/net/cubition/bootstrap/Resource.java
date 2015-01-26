@@ -80,6 +80,16 @@ public class Resource implements Serializable {
         return new Resource[0];
     }
 
+    /**
+     * Poll dependencies for this Resource, grabbing sub-dependencies as required.
+     *
+     * @return The recursive dependencies for this Resource, if any.
+     */
+    public Resource[] pollDependenciesRecursively() {
+        // TODO: This is a placeholder. Poll recursive dependencies here.
+        return new Resource[0];
+    }
+
     @Override
     public String toString() {
         return "Resource{" +
