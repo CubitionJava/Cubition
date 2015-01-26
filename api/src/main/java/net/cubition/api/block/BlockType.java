@@ -10,9 +10,11 @@ public interface BlockType {
 	 * To calculate the current block dig state,
 	 * use this formula:
 	 * 
-	 * [digState = time * digSpeed]
-	 * time is in seconds
-	 * digSpeed is more then float~1
+	 * [digState = (int)time * digSpeed]
+	 * where time is in seconds and 
+	 * digSpeed is a float lower than 10
+	 * Example: 2 * 0.73 = 1.46 int = 1
+	 * When it reaches 10 the block is broken
 	 * 
 	 * @param tool the tool
 	 * @return the dig speed
