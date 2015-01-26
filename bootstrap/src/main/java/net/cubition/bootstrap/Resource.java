@@ -70,4 +70,13 @@ public class Resource implements Serializable {
         // TODO: This is a placeholder. Poll dependencies here.
         return new Resource[0];
     }
+
+    @Override
+    public String toString() {
+        return "Resource{" +
+                "name='" + name + '\'' +
+                ", author='" + author + '\'' +
+                ", version='" + version + '\'' +
+                '}';
+    }
 }
