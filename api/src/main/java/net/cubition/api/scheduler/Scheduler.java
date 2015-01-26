@@ -35,7 +35,7 @@ public class Scheduler {
      * Posts a runnable to occur at a specified time.
      *
      * @param runnable The runnable to run.
-     * @param time The time, in milliseconds from now, to run the task.
+     * @param time     The time, in milliseconds from now, to run the task.
      * @return A future to control the Runnable with
      */
     public ScheduledFuture<?> post(Runnable runnable, long time) {
@@ -45,9 +45,9 @@ public class Scheduler {
     /**
      * Posts a runnable to occur at a specified time, and repeat itself
      *
-     * @param runnable The runnable to run.
+     * @param runnable      The runnable to run.
      * @param initialPeriod The time, in milliseconds from now, to run the task first.
-     * @param interval The time, in milliseconds from the previous interval, to run the task after the initialPeriod.
+     * @param interval      The time, in milliseconds from the previous interval, to run the task after the initialPeriod.
      * @return A future to control the Runnable with
      */
     public ScheduledFuture<?> post(Runnable runnable, long initialPeriod, long interval) {
@@ -63,6 +63,7 @@ public class Scheduler {
 
     /**
      * Returns the AllocationStrategy currently in use with this Scheduler.
+     *
      * @return The current AllocationStrategy
      */
     public AllocationStrategy getAllocationStrategy() {
