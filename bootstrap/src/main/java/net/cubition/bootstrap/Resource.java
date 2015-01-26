@@ -2,11 +2,8 @@ package net.cubition.bootstrap;
 
 import java.nio.file.Paths;
 
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.FieldAttributes;
 import java.io.File;
 import java.io.Serializable;
-import java.nio.file.Paths;
 
 /**
  * A resource is a mod, library, executable, texture pack, or other content that can be pulled at runtime.
