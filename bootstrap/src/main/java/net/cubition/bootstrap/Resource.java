@@ -1,9 +1,12 @@
 package net.cubition.bootstrap;
 
+import java.nio.file.Paths;
+
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
-
+import java.io.File;
 import java.io.Serializable;
+import java.nio.file.Paths;
 
 /**
  * A resource is a mod, library, executable, texture pack, or other content that can be pulled at runtime.
@@ -39,6 +42,11 @@ public class Resource implements Serializable {
     private final String source;
 
     /**
+     * The local copy of this resource
+     */
+    private final String localPath;
+
+    /**
      * Creates a new Resource representation containing data useful for fetching the mod, as well as version control.
      *
      * @param name The name of this resource
@@ -68,6 +76,9 @@ public class Resource implements Serializable {
         } else {
             this.source = null;
         }
+
+        String separator = File.pathSeparator;
+        this.localPath = "mods" + separator + author + separator + name + separator + version;
     }
 
     /**
@@ -110,12 +121,22 @@ public class Resource implements Serializable {
     }
 
     /**
+     * Check if this Resource exists locally
+     *
+     * @return Whether of not this resource needs to be downloaded
+     */
+    public boolean exists() {
+        return Paths.get(this.localPath + ".jar").toFile().exists();
+    }
+
+    /**
      * Poll dependencies for this Resource.
      *
      * @return The dependencies for this Resource, if any.
      */
     public Resource[] pollDependencies() {
         // TODO: This is a placeholder. Poll dependencies here.
+
         return new Resource[0];
     }
 

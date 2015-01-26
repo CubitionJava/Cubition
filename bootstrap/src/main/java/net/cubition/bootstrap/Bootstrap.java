@@ -2,6 +2,8 @@ package net.cubition.bootstrap;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.cubition.bootstrap.config.LaunchConfig;
@@ -55,7 +57,17 @@ public class Bootstrap {
     /**
      * The JSON parser converts the LaunchConfig to and from a String representation.
      */
-    private Gson jsonParser = new GsonBuilder().setPrettyPrinting().create();
+    private Gson jsonParser = new GsonBuilder().setPrettyPrinting().setExclusionStrategies(new ExclusionStrategy() {
+        @Override
+        public boolean shouldSkipField(FieldAttributes fieldAttributes) {
+            return fieldAttributes.getName().equals("localPath");
+        }
+
+        @Override
+        public boolean shouldSkipClass(Class<?> aClass) {
+            return false;
+        }
+    }).create();
 
     /**
      * Starts the Bootstrap process, loading dependencies, mods, and other resources as required,
