@@ -121,3 +121,7 @@ nbdist/
 nbactions.xml
 nb-configuration.xml
 .nb-gradle/
+
+### Cubition ###
+config.json
+mods/
