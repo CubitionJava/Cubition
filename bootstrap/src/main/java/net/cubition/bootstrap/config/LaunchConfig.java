@@ -1,5 +1,6 @@
 package net.cubition.bootstrap.config;
 
+import net.cubition.bootstrap.Bootstrap;
 import net.cubition.bootstrap.Resource;
 
 import java.io.Serializable;
@@ -16,6 +17,12 @@ import java.io.Serializable;
  */
 public class LaunchConfig implements Serializable {
     /**
+     * Provides a comment in the JSON file, helping the user with this LaunchConfig.
+     */
+    private String _ = "This is the main configuration for the Bootstrap. " +
+            "More info about me can be found at http://cubition.net/...";
+
+    /**
      * The 'type' defines what main executable this configuration is associated with.
      *
      * This resource has to point to a runnable .jar with a endpoint located (by default)
@@ -25,7 +32,7 @@ public class LaunchConfig implements Serializable {
      * Dependencies are automatically polled for this executable, if it includes such definitions in a .json
      * file with the same filename and location.
      */
-    private Resource type = new Resource("server", "cubition", "LATEST");
+    private Resource type = new Resource("server", "cubition", Bootstrap.VERSION);
 
     /**
      * The 'mods' defines what mods are to be imported at runtime. Whether these are full blown games,
