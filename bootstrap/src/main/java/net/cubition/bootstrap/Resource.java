@@ -44,7 +44,7 @@ public class Resource implements Serializable {
     /**
      * The local copy of this resource
      */
-    private transient final String localPath;
+    private final transient String localPath;
 
     /**
      * Creates a new Resource representation containing data useful for fetching the mod, as well as version control.
