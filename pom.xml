@@ -13,6 +13,6 @@
         <module>api</module>
         <module>client</module>
         <module>server</module>
+        <module>bootstrap</module>
     </modules>
-
 </project>
