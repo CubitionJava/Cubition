@@ -22,6 +22,20 @@ To compile:
 - Run `/path/to/mvn` in the source root
 - The packaged results will be in the `out/` directory
 
+To generate Javadocs (must be done independently of compile on Linux + Mac):
+- Run `/path/to/mvn clean` to clean up the environment.
+- Create required directories (via `mkdir`):
+- `mkdir -p api/target/site/apidocs`
+- `mkdir -p client/target/site/apidocs`
+- `mkdir -p server/target/site/apidocs`
+- `mkdir -p bootstrap/target/site/apidocs`
+- `mkdir -p out/javadoc-api`
+- `mkdir -p out/javadoc-client`
+- `mkdir -p out/javadoc-server`
+- `mkdir -p out/javadoc-bootstrap`
+- Run `/path/to/mvn javadoc:javadoc package` to build the src + Javadocs.
+- Your resulting documentation will be in `out/javadoc-*`
+
 Contributions
 -------------
 
