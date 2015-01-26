@@ -12,7 +12,7 @@ public interface BlockType {
 	 * 
 	 * [digState = (int)time * digSpeed]
 	 * where time is in seconds and 
-	 * digSpeed is a float lower than 10
+	 * digSpeed is a float equal to lower than 10. (10 is insta-break)
 	 * Example: 2 * 0.73 = 1.46 int = 1
 	 * When it reaches 10 the block is broken
 	 * 
