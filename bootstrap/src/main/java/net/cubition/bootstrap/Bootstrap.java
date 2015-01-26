@@ -57,17 +57,7 @@ public class Bootstrap {
     /**
      * The JSON parser converts the LaunchConfig to and from a String representation.
      */
-    private Gson jsonParser = new GsonBuilder().setPrettyPrinting().setExclusionStrategies(new ExclusionStrategy() {
-        @Override
-        public boolean shouldSkipField(FieldAttributes fieldAttributes) {
-            return fieldAttributes.getName().equals("localPath");
-        }
-
-        @Override
-        public boolean shouldSkipClass(Class<?> aClass) {
-            return false;
-        }
-    }).create();
+    private Gson jsonParser = new GsonBuilder().setPrettyPrinting().create();
 
     /**
      * Starts the Bootstrap process, loading dependencies, mods, and other resources as required,
