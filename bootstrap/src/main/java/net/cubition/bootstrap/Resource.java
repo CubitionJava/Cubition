@@ -31,16 +31,22 @@ public class Resource implements Serializable {
     private final String version;
 
     /**
+     * The download repository for the resource
+     */
+    private final String source;
+
+    /**
      * Creates a new Resource representation containing data useful for fetching the mod, as well as version control.
      *
      * @param name The name of this resource
      * @param author The author of this resource
      * @param version The version of this resource
      */
-    public Resource(String name, String author, String version) {
+    public Resource(String name, String author, String version, String source) {
         this.name = name;
         this.author = author;
         this.version = version;
+        this.source = source;
     }
 
     /**
@@ -71,6 +77,15 @@ public class Resource implements Serializable {
     }
 
     /**
+     * Returns the repository for this resource
+     *
+     * @return The repository for this resource
+     */
+    public String getSource() {
+        return this.source;
+    }
+
+    /**
      * Poll dependencies for this Resource.
      *
      * @return The dependencies for this Resource, if any.
@@ -96,6 +111,7 @@ public class Resource implements Serializable {
                 "name='" + name + '\'' +
                 ", author='" + author + '\'' +
                 ", version='" + version + '\'' +
+                ", source='" + source + '\'' +
                 '}';
     }
 }

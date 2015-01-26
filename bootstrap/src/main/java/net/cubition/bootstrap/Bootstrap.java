@@ -29,10 +29,15 @@ public class Bootstrap {
     private static final File CONFIG_LOCATION = new File("config.json");
 
     /**
+     * The default resource download server
+     */
+    public static final String DEFAULT_RESOURCE_SERVER = "http://main.cubition.net/";
+
+    /**
      * Parameter:
      *     Used mainly in a client situation, this param forces no GUI to appear.
      */
-    @Parameter(names = {"-nogui"}, description = "Forces no GUI to appear")
+    @Parameter(names = {"-nogui", "--no-gui"}, description = "Forces no GUI to appear")
     private boolean showGui = true;
 
     /**
