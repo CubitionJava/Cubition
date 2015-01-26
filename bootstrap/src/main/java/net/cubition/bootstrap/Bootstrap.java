@@ -8,6 +8,8 @@ import net.cubition.bootstrap.config.LaunchConfig;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The Bootstrap class allows for dynamic and easy configuration of both server and clients, and allows for them
@@ -81,6 +83,7 @@ public class Bootstrap {
             }
         }
 
+        // Check if we have a configuration at this point.
         if (configuration == null) {
             System.out.println("Generating empty configuration at \"" +
                     CONFIG_LOCATION.getPath() + "\". Configure at will, and restart Bootstrap.");
@@ -100,6 +103,86 @@ public class Bootstrap {
             // Give the user a chance to set things up.
             System.exit(0);
         }
+
+        // Build dependencies
+        System.out.println("Building dependencies...");
+
+        // We know what we need fetch, so throw it all into a pool, and compute dependencies.
+        List<Resource> dependencyTree = new ArrayList<Resource>();
+
+        // Add the main executable dependency and mods
+        dependencyTree.add(configuration.getExecutable());
+
+        // Add the mods, making sure we don't define duplicates
+        for (Resource modResource : configuration.getMods()) {
+            boolean isDuplicate = false;
+            // Compare against all we have currently
+            for (Resource parentResource :
+                    dependencyTree.toArray(new Resource[dependencyTree.size()])) {
+                // Compare the values between the two current resources
+                if (modResource.getAuthor().equalsIgnoreCase(parentResource.getAuthor())
+                        && modResource.getName().equalsIgnoreCase(parentResource.getName())) {
+                    // We have a duplicate mod definition!
+                    // We can't really find out which one is newer, because 'version' is a String.
+                    // Instead, use the first one we find.
+                    // This is dangerous; warn the user about it.
+                    System.out.println("WARNING: Duplicate Resource definition in your config.yml." +
+                            " Using first found (" + parentResource + ").");
+                    // Skip adding it in the future.
+                    isDuplicate = true;
+                    break;
+                }
+            }
+
+            if (isDuplicate) {
+                // This is a duplicate; don't add it.
+                continue;
+            }
+
+            // We are all good!
+            dependencyTree.add(modResource);
+        }
+
+        // Add dependencies
+        for (Resource resource :
+                dependencyTree.toArray(new Resource[dependencyTree.size()])) {
+            // Add them together
+            Resource[] resources = resource.pollDependenciesRecursively();
+
+            // Add it, checking for duplicates
+            for (Resource modResource : resources) {
+                boolean isDuplicate = false;
+                // Compare against all we have currently
+                for (Resource parentResource :
+                        dependencyTree.toArray(new Resource[dependencyTree.size()])) {
+                    // Compare the values between the two current resources
+                    if (modResource.getAuthor().equalsIgnoreCase(parentResource.getAuthor())
+                            && modResource.getName().equalsIgnoreCase(parentResource.getName())) {
+                        // We have a duplicate mod definition!
+                        // We can't really find out which one is newer, because 'version' is a String.
+                        // Instead, use the first one we find.
+                        // This is dangerous; warn the user about it.
+                        System.out.println("WARNING: Duplicate Resource definition in dependency for " + resource + "." +
+                                " Using first found (" + parentResource + ").");
+                        // Skip adding it in the future.
+                        isDuplicate = true;
+                        break;
+                    }
+                }
+
+                if (isDuplicate) {
+                    // This is a duplicate; don't add it.
+                    continue;
+                }
+
+                // We are all good!
+                dependencyTree.add(modResource);
+            }
+        }
+
+        // DEBUG: Print resulting dependency tree
+        System.out.println("Dependencies:");
+        System.out.println("\t" + dependencyTree.toString().replace("}, Resource", "},\n\t Resource"));
     }
 
     /**
