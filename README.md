@@ -3,6 +3,7 @@ Cubition
 
 * Builds of the project can be found [here](http://dl.cubition.net).
 * Latest bootstrap (client/server) release can be found [here](http://dl.cubition.net?latest=1).
+* Current builds listed are outdated as of now, so if you are looking for direct downloads, check those out here [here](http://jenkins.jselby.net/job/Cubition/)
 
 Cubition is a voxel-based game engine, inspired by Minecraft, that aims to
 to ease the previously painful task of modding, network issues, and so on.
