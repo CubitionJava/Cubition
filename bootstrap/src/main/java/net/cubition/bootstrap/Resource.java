@@ -4,6 +4,8 @@ import java.nio.file.Paths;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * A resource is a mod, library, executable, texture pack, or other content that can be pulled at runtime.
@@ -133,7 +135,6 @@ public class Resource implements Serializable {
      */
     public Resource[] pollDependencies() {
         // TODO: This is a placeholder. Poll dependencies here.
-
         return new Resource[0];
     }
 
@@ -143,8 +144,14 @@ public class Resource implements Serializable {
      * @return The recursive dependencies for this Resource, if any.
      */
     public Resource[] pollDependenciesRecursively() {
-        // TODO: This is a placeholder. Poll recursive dependencies here.
-        return new Resource[0];
+        ArrayList<Resource> resources = new ArrayList<>();
+
+        for (Resource resource : pollDependencies()) {
+            resources.add(resource);
+            Collections.addAll(resources, resource.pollDependenciesRecursively());
+        }
+
+        return resources.toArray(new Resource[resources.size()]);
     }
 
     @Override
