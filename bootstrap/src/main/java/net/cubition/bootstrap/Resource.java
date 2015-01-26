@@ -76,6 +76,7 @@ public class Resource implements Serializable {
             this.source = null;
         }
 
+        // Derive local path
         String separator = File.pathSeparator;
         this.localPath = "mods" + separator + author + separator + name + separator + version;
     }
