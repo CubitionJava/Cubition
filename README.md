@@ -19,8 +19,8 @@ configuration format, and is cross-platform.
 To compile:
 - Install Maven / a Oracle JDK (if required)
 - Clone, or [Download the .zip](https://github.com/Cubition/Cubition/archive/master.zip) of this project's source code
-- Run `/path/to/mvn clean package` in the source root
-- The packaged results will be in the `target/` directory
+- Run `/path/to/mvn` in the source root
+- The packaged results will be in the `out/` directory
 
 Contributions
 -------------
