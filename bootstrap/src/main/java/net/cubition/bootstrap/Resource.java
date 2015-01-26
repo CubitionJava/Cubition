@@ -1,5 +1,8 @@
 package net.cubition.bootstrap;
 
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
+
 import java.io.Serializable;
 
 /**
@@ -42,11 +45,29 @@ public class Resource implements Serializable {
      * @param author The author of this resource
      * @param version The version of this resource
      */
+    public Resource(String name, String author, String version) {
+        this(name, author, version, null);
+    }
+
+    /**
+     * Creates a new Resource representation containing data useful for fetching the mod, as well as version control.
+     *
+     * @param name The name of this resource
+     * @param author The author of this resource
+     * @param version The version of this resource
+     * @param source The custom repo of this resource
+     */
     public Resource(String name, String author, String version, String source) {
         this.name = name;
         this.author = author;
         this.version = version;
-        this.source = source;
+
+        // Only store if custom
+        if (source != null && !source.equalsIgnoreCase(Bootstrap.DEFAULT_RESOURCE_SERVER)) {
+            this.source = source;
+        } else {
+            this.source = null;
+        }
     }
 
     /**
@@ -82,6 +103,9 @@ public class Resource implements Serializable {
      * @return The repository for this resource
      */
     public String getSource() {
+        if (this.source == null) {
+            return Bootstrap.DEFAULT_RESOURCE_SERVER;
+        }
         return this.source;
     }
 
