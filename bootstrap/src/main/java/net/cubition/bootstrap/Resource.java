@@ -129,6 +129,15 @@ public class Resource implements Serializable {
         return getLocalFile() != null && getLocalFile().exists();
     }
 
+    /**
+     * Downloads a local copy of this Resource
+     *
+     * @return If the operation was successful or not
+     */
+    public boolean downloadLocalCopy() {
+        // TODO: Implement this
+        return true;
+    }
 
     /**
      * Returns the local copy of this Resource, if it has been downloaded.
@@ -141,7 +150,7 @@ public class Resource implements Serializable {
             return new File(this.source.substring("file://".length()));
         }
 
-        if (this.localPath == null) {
+        if (this.localPath == null || !this.existsLocally()) {
             return null;
         }
 

@@ -197,11 +197,18 @@ public class Bootstrap {
             }
         }
 
-        // TODO: Download Resources, as required
+        dependencyTree.forEach((r) -> {
+            boolean success = r.downloadLocalCopy();
+
+            if (!success) {
+                System.err.println("ERROR: Could not get resource " + r.getName() + " from source " + r.getSource());
+                System.err.println("ERROR: FATAL");
+                System.exit(1);
+            }
+        });
 
         // Alright, pull the main server from the Resource bundle
         dependencyTree.remove(configuration.getExecutable());
-
         Resource mainExecutable = configuration.getExecutable();
 
         // Mount it
@@ -216,9 +223,7 @@ public class Bootstrap {
         }
 
         // Create a classloader for it
-        URLClassLoader loader = new URLClassLoader(new URL[]{
-                mainExecutableJar
-        });
+        URLClassLoader loader = new URLClassLoader(new URL[]{ mainExecutableJar });
 
         // Build exports
         Map<String, Object> values = new HashMap<>();
@@ -254,6 +259,7 @@ public class Bootstrap {
 
         // We shouldn't be here!
         System.err.println("No entry point found in the executable .jar.");
+        System.exit(1);
     }
 
     /**

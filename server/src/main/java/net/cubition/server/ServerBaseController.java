@@ -3,6 +3,8 @@ package net.cubition.server;
 import net.cubition.api.ServerController;
 import net.cubition.api.mod.BaseModManager;
 import net.cubition.api.mod.ModManager;
+import net.cubition.api.vc.Availability;
+import net.cubition.api.vc.Versions;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -12,6 +14,7 @@ import java.util.Map;
 /**
  * This class is the default entry point into the server
  */
+@Availability(server = Versions.SERVER_DEVL_0_0_1, client = Versions.CLIENT_NEVER)
 public class ServerBaseController implements ServerController {
     public static final String WORKING_DIRECTORY = System.getProperty("user.dir");
     private static final String RESTART_SCRIPT = WORKING_DIRECTORY + "restart.sh";
@@ -75,15 +78,16 @@ public class ServerBaseController implements ServerController {
      * </ol>
      */
     @Override
-    public void tick() {
-        //
+    public synchronized void tick() {
+        this.destroy();
     }
 
     /**
      * Shuts the Server down
      */
     @Override
-    public void destroy() {
+    public synchronized void destroy() {
+        System.out.println("Shutting down...");
         this.running = false;
     }
 
@@ -112,12 +116,33 @@ public class ServerBaseController implements ServerController {
     }
 
     /**
+     * Gets the current working directory
+     *
+     * @return The server root
+     */
+    @Override
+    public String getWorkingDirectory() {
+        return ServerBaseController.WORKING_DIRECTORY;
+    }
+
+    /**
+     * Gets the current version of this server
+     *
+     * @return The current server version
+     */
+    @Override
+    public Versions getVersion() {
+        return Versions.SERVER_DEVL_0_0_1;
+    }
+
+    /**
      * Method called from bootstrap to enter the default server controller<br>
      * Parses arguments, and calls out to initilize() in a new instance
      *
      * @param args Arguments to the server itself (constructed in Bootstrap)
      */
     public static void entry(Map<String, Object> args) {
+        System.out.println("Welcome to serverland!");
         ServerBaseController instance = new ServerBaseController();
         instance.modFiles = (List<String>)args.get("mods");
 
@@ -126,6 +151,7 @@ public class ServerBaseController implements ServerController {
         // Start the Server
         instance.initialize();
         instance.start();
+        System.exit(0);
 
         // If we get to here, there was an error
         throw new ServerError();
