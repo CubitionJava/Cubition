@@ -4,6 +4,7 @@ import net.cubition.bootstrap.Bootstrap;
 import net.cubition.bootstrap.Resource;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * The LaunchConfig defines a configuration of a server/client/other runnable service. This allows users to
@@ -66,5 +67,13 @@ public class LaunchConfig implements Serializable {
      */
     public Resource[] getMods() {
         return mods;
+    }
+
+    @Override
+    public String toString() {
+        return "LaunchConfig{" +
+                "type=" + type +
+                ", mods=" + Arrays.toString(mods) +
+                '}';
     }
 }
