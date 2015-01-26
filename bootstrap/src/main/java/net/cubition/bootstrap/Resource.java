@@ -62,6 +62,15 @@ public class Resource implements Serializable {
     }
 
     /**
+     * Returns the version of this resource.
+     *
+     * @return The version of this resource.
+     */
+    public String getVersion() {
+        return version;
+    }
+
+    /**
      * Poll dependencies for this Resource.
      *
      * @return The dependencies for this Resource, if any.
