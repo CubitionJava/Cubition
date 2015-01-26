@@ -1,5 +1,11 @@
 package net.cubition.bootstrap;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Paths;
 
 import java.io.File;
@@ -23,37 +29,87 @@ public class Resource implements Serializable {
     /**
      * The name of the resource defines the actual resource name, and is used in downloading resources.
      */
-    private final String name;
+    private String name;
 
     /**
      * The author is the one who created the resource, and therefore defines what namespace this resource is under.
      */
-    private final String author;
+    private String author;
 
     /**
      * The version of the resource. 'LATEST' means that the newest resource is used.
      */
-    private final String version;
+    private String version;
+
+    /**
+     * The type of the resource. Used as the file's extension
+     */
+    private String type;
 
     /**
      * The download repository for the resource
      */
-    private final String source;
+    private URL source;
+
+    /**
+     * The exact path to the resource
+     * Excludes the type extension
+     */
+    private String path;
 
     /**
      * The local copy of this resource
      */
-    private final transient String localPath;
+    private transient String localPath;
+
+    /**
+     * The remote path to this resource
+     */
+    private transient String remotePath;
+
+    /**
+     * Weather or not initialize() has been called yet
+     */
+    private transient boolean initialized = false;
+
+    /**
+     * Download a file from the source URL
+     *
+     * @param file the URL to download
+     * @param output the output file
+     * @return success
+     */
+    private static boolean downloadFile(URL file, String output, boolean force) {
+        if (!force && Paths.get(output).toFile().exists()) return true;
+
+        try {
+            ReadableByteChannel rbc = Channels.newChannel(file.openStream());
+            FileOutputStream fos = new FileOutputStream(output);
+            fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+        } catch (IOException ex) {
+            return false;
+        }
+
+        return Paths.get(output).toFile().exists();
+    }
+
+    /**
+     * Default Constructor for GSON
+     */
+    private Resource() {
+        super();
+    }
 
     /**
      * Creates a new Resource representation containing data useful for fetching the mod, as well as version control.
      *
      * @param name The name of this resource
      * @param author The author of this resource
+     * @param type The type of this resource
      * @param version The version of this resource
      */
-    public Resource(String name, String author, String version) {
-        this(name, author, version, null);
+    public Resource(String name, String author, String type, String version) {
+        this(name, author, type, version, null);
     }
 
     /**
@@ -62,23 +118,46 @@ public class Resource implements Serializable {
      * @param name The name of this resource
      * @param author The author of this resource
      * @param version The version of this resource
+     * @param type The type of this resource
      * @param source The custom repo of this resource
      */
-    public Resource(String name, String author, String version, String source) {
+    public Resource(String name, String author, String type, String version, URL source) {
+        this.type = type;
         this.name = name;
         this.author = author;
         this.version = version;
+        this.source = source;
 
-        // Only store if custom
-        if (source != null && !source.equalsIgnoreCase(Bootstrap.DEFAULT_RESOURCE_SERVER)) {
-            this.source = source;
+        this.initialize();
+    }
+
+    /**
+     * Initializes this resource.<br>
+     *     Called after Deserialization or from the constructor
+     */
+    private void initialize() {
+        if (this.initialized) return;
+
+        // Sanitize source Field
+        if (this.source != null && !this.source.toString().equalsIgnoreCase(Bootstrap.DEFAULT_RESOURCE_SERVER)) {
+            if (this.source.toString().startsWith("file://"))
+                System.out.println("WARNING: Using local sources is bad practice (" + source + ")");
         } else {
             this.source = null;
         }
 
-        // Derive local path
-        String separator = File.pathSeparator;
-        this.localPath = "mods" + separator + author + separator + name + separator + version + ".jar";
+        if (this.path == null) {
+            // Derive paths
+            String separator = "/";
+            this.localPath = "mods" + separator + author + separator + name + separator + name + "_" + version;
+            this.remotePath = ((source == null) ? Bootstrap.DEFAULT_RESOURCE_SERVER : source) +
+                    author + "/" + name + "/" + name + "_" + version;
+        } else {
+            this.localPath = this.path;
+            this.remotePath = this.path;
+        }
+
+        this.initialized = true;
     }
 
     /**
@@ -109,14 +188,28 @@ public class Resource implements Serializable {
     }
 
     /**
+     * Returns the type of this resource
+     *
+     * @return The type of this resource
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
      * Returns the repository for this resource
      *
      * @return The repository for this resource
      */
-    public String getSource() {
+    public URL getSource() {
         if (this.source == null) {
-            return Bootstrap.DEFAULT_RESOURCE_SERVER;
+            try {
+                return new URL(Bootstrap.DEFAULT_RESOURCE_SERVER);
+            } catch (MalformedURLException ex) {
+                return null;
+            }
         }
+
         return this.source;
     }
 
@@ -126,7 +219,10 @@ public class Resource implements Serializable {
      * @return Whether of not this resource needs to be downloaded
      */
     public boolean existsLocally() {
-        return getLocalFile() != null && getLocalFile().exists();
+        if (!this.initialized) this.initialize();
+
+        return (Paths.get(this.localPath + "." + this.type).toFile().exists()) &&
+               (Paths.get(this.localPath + ".json").toFile().exists());
     }
 
     /**
@@ -135,8 +231,25 @@ public class Resource implements Serializable {
      * @return If the operation was successful or not
      */
     public boolean downloadLocalCopy() {
-        // TODO: Implement this
+        if (this.existsLocally()) return true;
+
+        Paths.get(this.localPath + ".json").toFile().getAbsoluteFile().getParentFile().mkdirs();
+
+        try {
+            if (!Resource.downloadFile(new URL(this.remotePath + "." + this.type),  this.localPath + "." + this.type,  false)) return false;
+            if (!Resource.downloadFile(new URL(this.remotePath + ".json"), this.localPath + ".json", false)) return false;
+        } catch (MalformedURLException ex) {
+            System.out.println("ERROR: Invalid URL " + this.remotePath + " for resource " + this.getName());
+            return false;
+        }
+
         return true;
+    }
+
+    public File getRemoteFile() {
+        if (!this.initialized) this.initialize();
+
+        return new File(this.remotePath + "." + this.type);
     }
 
     /**
@@ -145,16 +258,11 @@ public class Resource implements Serializable {
      * @return The local copy of this resource, or null if it doesn't exist locally yet.
      */
     public File getLocalFile() {
-        if (!getSource().equalsIgnoreCase(Bootstrap.DEFAULT_RESOURCE_SERVER) && getSource().startsWith("file://")) {
-            System.out.println("WARNING: Using local sources is bad practice (" + getSource() + ")");
-            return new File(this.source.substring("file://".length()));
-        }
-
-        if (this.localPath == null || !this.existsLocally()) {
+        if (!this.existsLocally()) {
             return null;
         }
 
-        return new File(this.localPath);
+        return new File(this.localPath + "." + this.type);
     }
 
     /**
@@ -163,6 +271,8 @@ public class Resource implements Serializable {
      * @return The dependencies for this Resource, if any.
      */
     public Resource[] pollDependencies() {
+        if (!this.initialized) this.initialize();
+
         // TODO: This is a placeholder. Poll dependencies here.
         return new Resource[0];
     }
@@ -188,6 +298,7 @@ public class Resource implements Serializable {
         return "Resource{" +
                 "name='" + name + '\'' +
                 ", author='" + author + '\'' +
+                ", type='" + type + '\'' +
                 ", version='" + version + '\'' +
                 ", source='" + source + '\'' +
                 '}';
