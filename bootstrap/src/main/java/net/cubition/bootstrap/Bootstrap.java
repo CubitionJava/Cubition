@@ -113,7 +113,7 @@ public class Bootstrap {
         System.out.println("Building dependencies...");
 
         // We know what we need fetch, so throw it all into a pool, and compute dependencies.
-        List<Resource> dependencyTree = new ArrayList<Resource>();
+        List<Resource> dependencyTree = new ArrayList<>();
 
         // Add the main executable dependency and mods
         dependencyTree.add(configuration.getExecutable());
