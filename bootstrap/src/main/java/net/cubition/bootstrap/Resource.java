@@ -124,7 +124,7 @@ public class Resource implements Serializable {
      *
      * @return Whether of not this resource needs to be downloaded
      */
-    public boolean exists() {
+    public boolean existsLocally() {
         return Paths.get(this.localPath + ".jar").toFile().exists();
     }
 
