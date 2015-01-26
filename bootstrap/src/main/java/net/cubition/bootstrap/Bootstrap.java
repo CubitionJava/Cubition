@@ -8,8 +8,15 @@ import net.cubition.bootstrap.config.LaunchConfig;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The Bootstrap class allows for dynamic and easy configuration of both server and clients, and allows for them
@@ -32,6 +39,11 @@ public class Bootstrap {
      * The default resource download server
      */
     public static final String DEFAULT_RESOURCE_SERVER = "http://main.cubition.net/";
+
+    /**
+     * The entry points that we can access Executables via
+     */
+    private static final String[] EXECUTABLE_ENDPOINTS = {"net.cubition.server.ServerBaseController"};
 
     /**
      * Parameter:
@@ -185,9 +197,63 @@ public class Bootstrap {
             }
         }
 
-        // DEBUG: Print resulting dependency tree
-        System.out.println("Dependencies:");
-        System.out.println("\t" + dependencyTree.toString().replace("}, Resource", "},\n\t Resource"));
+        // TODO: Download Resources, as required
+
+        // Alright, pull the main server from the Resource bundle
+        dependencyTree.remove(configuration.getExecutable());
+
+        Resource mainExecutable = configuration.getExecutable();
+
+        // Mount it
+        URL mainExecutableJar = null;
+
+        try {
+            mainExecutableJar = mainExecutable.getLocalFile().toURI().toURL();
+        } catch (MalformedURLException e) {
+            System.err.println("Failure while importing main executable:");
+            e.printStackTrace();
+            System.exit(2);
+        }
+
+        // Create a classloader for it
+        URLClassLoader loader = new URLClassLoader(new URL[]{
+                mainExecutableJar
+        });
+
+        // Build exports
+        Map<String, Object> values = new HashMap<>();
+
+        ArrayList<String> mods = new ArrayList<>();
+        for (Resource resource : dependencyTree) {
+            if (resource.getLocalFile() != null) {
+                mods.add(resource.getLocalFile().getPath());
+            }
+        }
+
+        values.put("mods", mods);
+
+        // Poll it for standard imports
+        // TODO: Read configuration
+        for (String checkPath : EXECUTABLE_ENDPOINTS) {
+            try {
+                Class<?> checkClass = loader.loadClass(checkPath);
+                // Check this classes methods
+                for (Method method : checkClass.getDeclaredMethods()) {
+                    if (method.getName().equalsIgnoreCase("entry")) {
+                        System.out.println("Launching...");
+                        System.out.println("-----------------------------");
+                        method.invoke(null, values);
+                        System.exit(0);
+                    }
+                }
+            } catch (ClassNotFoundException
+                    | InvocationTargetException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // We shouldn't be here!
+        System.err.println("No entry point found in the executable .jar.");
     }
 
     /**

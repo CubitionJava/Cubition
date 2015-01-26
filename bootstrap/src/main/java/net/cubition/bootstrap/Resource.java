@@ -78,7 +78,7 @@ public class Resource implements Serializable {
 
         // Derive local path
         String separator = File.pathSeparator;
-        this.localPath = "mods" + separator + author + separator + name + separator + version;
+        this.localPath = "mods" + separator + author + separator + name + separator + version + ".jar";
     }
 
     /**
@@ -126,7 +126,26 @@ public class Resource implements Serializable {
      * @return Whether of not this resource needs to be downloaded
      */
     public boolean existsLocally() {
-        return Paths.get(this.localPath + ".jar").toFile().exists();
+        return getLocalFile() != null && getLocalFile().exists();
+    }
+
+
+    /**
+     * Returns the local copy of this Resource, if it has been downloaded.
+     *
+     * @return The local copy of this resource, or null if it doesn't exist locally yet.
+     */
+    public File getLocalFile() {
+        if (!getSource().equalsIgnoreCase(Bootstrap.DEFAULT_RESOURCE_SERVER) && getSource().startsWith("file://")) {
+            System.out.println("WARNING: Using local sources is bad practice (" + getSource() + ")");
+            return new File(this.source.substring("file://".length()));
+        }
+
+        if (this.localPath == null) {
+            return null;
+        }
+
+        return new File(this.localPath);
     }
 
     /**
