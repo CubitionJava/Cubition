@@ -6,10 +6,10 @@ public interface BlockType {
 
     /**
      * Get the dig speed using tool [tool]
-     * <p/>
+     * 
      * To calculate the current block dig state,
      * use this formula:
-     * <p/>
+     *
      * [digState = (int)time * digSpeed]
      * where time is in seconds and
      * digSpeed is a float equal to lower than 10. (10 is insta-break)
