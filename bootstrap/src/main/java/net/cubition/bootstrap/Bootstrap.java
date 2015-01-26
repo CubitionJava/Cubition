@@ -26,7 +26,7 @@ public class Bootstrap {
     /**
      * The location of the Bootstrap configuration.
      */
-    private static final File CONFIG_LOCATION = new File("config.yml");
+    private static final File CONFIG_LOCATION = new File("config.json");
 
     /**
      * Parameter:
