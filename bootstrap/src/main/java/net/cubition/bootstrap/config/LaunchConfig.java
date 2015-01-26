@@ -33,7 +33,7 @@ public class LaunchConfig implements Serializable {
      * Dependencies are automatically polled for this executable, if it includes such definitions in a .json
      * file with the same filename and location.
      */
-    private Resource type = new Resource("server", "cubition", "jar", Bootstrap.VERSION, null);
+    private Resource type = new Resource("server", "cubition", "jar", Bootstrap.VERSION);
 
     /**
      * The 'mods' defines what mods are to be imported at runtime. Whether these are full blown games,
@@ -42,8 +42,8 @@ public class LaunchConfig implements Serializable {
      * Dependencies are automatically polled for these mods, if they include such definitions in a .json
      * file with the same filename and location.
      */
-    private Resource[] mods = new Resource[]{
-            new Resource("core", "cubition", "mod", "LATEST", null)
+    private Resource[] mods = new Resource[] {
+            new Resource("core", "cubition", "mod", Bootstrap.VERSION)
     };
 
     /**

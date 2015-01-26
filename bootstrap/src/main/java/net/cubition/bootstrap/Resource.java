@@ -6,6 +6,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 import java.nio.file.Paths;
 
 import java.io.File;
@@ -82,6 +84,8 @@ public class Resource implements Serializable {
     private static boolean downloadFile(URL file, String output, boolean force) {
         if (!force && Paths.get(output).toFile().exists()) return true;
 
+        System.out.println("Grabbing " + file.toString() + "...");
+
         try {
             ReadableByteChannel rbc = Channels.newChannel(file.openStream());
             FileOutputStream fos = new FileOutputStream(output);
@@ -148,7 +152,7 @@ public class Resource implements Serializable {
 
         if (this.path == null) {
             // Derive paths
-            String separator = "/";
+            String separator = FileSystems.getDefault().getSeparator();
             this.localPath = "mods" + separator + author + separator + name + separator + name + "_" + version;
             this.remotePath = ((source == null) ? Bootstrap.DEFAULT_RESOURCE_SERVER : source) +
                     author + "/" + name + "/" + name + "_" + version;
