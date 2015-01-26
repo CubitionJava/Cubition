@@ -18,7 +18,7 @@ public class Resource implements Serializable {
     /**
      * Provides a comment in the JSON file, helping the user with this Resource.
      */
-    private String _ = "This is a Resource. More info about me can be found at http://cubition.net/...";
+    private String _c = "This is a Resource. More info about me can be found at http://cubition.net/...";
 
     /**
      * The name of the resource defines the actual resource name, and is used in downloading resources.

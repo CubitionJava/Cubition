@@ -20,7 +20,7 @@ public class LaunchConfig implements Serializable {
     /**
      * Provides a comment in the JSON file, helping the user with this LaunchConfig.
      */
-    private String _ = "This is the main configuration for the Bootstrap. " +
+    private String _c = "This is the main configuration for the Bootstrap. " +
             "More info about me can be found at http://cubition.net/...";
 
     /**
