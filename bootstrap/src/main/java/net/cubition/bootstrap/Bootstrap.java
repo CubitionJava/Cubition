@@ -42,11 +42,6 @@ public class Bootstrap {
     public static final String VERSION = "0.1";
 
     /**
-     * The location of the Bootstrap configuration.
-     */
-    private static final File CONFIG_LOCATION = new File("config.json");
-
-    /**
      * The default resource download server
      */
     public static final String DEFAULT_RESOURCE_SERVER = "http://main.cubition.net/";
@@ -77,14 +72,12 @@ public class Bootstrap {
     @Parameter(names = {"--clean"}, description = "Erase mods directory, and build from scratch")
     private boolean cleanBuild = false;
 
-
     /**
      * Parameter:
      *     Forces debug messages to appear.
      */
     @Parameter(names = {"--debug"}, description = "Forces debug messages to appear")
     private boolean debug = false;
-
 
     /**
      * Defines where to store mod files.
@@ -94,6 +87,15 @@ public class Bootstrap {
      */
     @Parameter(names = {"--modDir"}, description = "Sets the target directory for mods to be installed under")
     private String modDir = "mods";
+
+    /**
+     * The location of the Bootstrap configuration.
+     *
+     * Parameter:
+     *     Allows for a custom config to be inserted into a current setup.s
+     */
+    @Parameter(names = {"--config"}, description = "Sets the configuration to be used")
+    private String configLocation = "config.json";
 
     /**
      * The main Bootstrap configuration. This defines Resources to be loaded, as well as other settings.
@@ -111,14 +113,16 @@ public class Bootstrap {
      */
     private void start() {
         // Read in a configuration, if available.
+        File configLocation = new File(this.configLocation);
+
         try {
-            if (!CONFIG_LOCATION.exists()) {
+            if (!configLocation.exists()) {
                 // It doesn't exist.
-                throw new FileNotFoundException(CONFIG_LOCATION.getPath());
+                throw new FileNotFoundException(configLocation.getPath());
             }
 
             // Open the file
-            InputStream in = new BufferedInputStream(new FileInputStream(CONFIG_LOCATION));
+            InputStream in = new BufferedInputStream(new FileInputStream(configLocation));
 
             // Lazy reading
             String contents = IOUtils.toString(in);
@@ -139,7 +143,7 @@ public class Bootstrap {
         // Check if we have a configuration at this point.
         if (configuration == null) {
             LOG.info("Generating empty configuration at \"" +
-                    CONFIG_LOCATION.getPath() + "\". Configure at will, and restart Bootstrap.");
+                    configLocation.getPath() + "\". Configure at will, and restart Bootstrap.");
 
             // Generate ourselves one
             configuration = new LaunchConfig();
@@ -191,6 +195,13 @@ public class Bootstrap {
                 if (modResource.getAuthor().equalsIgnoreCase(parentResource.getAuthor())
                         && modResource.getName().equalsIgnoreCase(parentResource.getName())) {
                     // We have a duplicate mod definition!
+
+                    // If their versions match, we don't have a problem.
+                    if (modResource.getVersion().equalsIgnoreCase(parentResource.getVersion())) {
+                        isDuplicate = true;
+                        break;
+                    }
+                    
                     // We can't really find out which one is newer, because 'version' is a String.
                     // Instead, use the first one we find.
                     // This is dangerous; warn the user about it.
@@ -233,6 +244,13 @@ public class Bootstrap {
                     if (modResource.getAuthor().equalsIgnoreCase(parentResource.getAuthor())
                             && modResource.getName().equalsIgnoreCase(parentResource.getName())) {
                         // We have a duplicate mod definition!
+
+                        // If their versions match, we don't have a problem.
+                        if (modResource.getVersion().equalsIgnoreCase(parentResource.getVersion())) {
+                            isDuplicate = true;
+                            break;
+                        }
+
                         // We can't really find out which one is newer, because 'version' is a String.
                         // Instead, use the first one we find.
                         // This is dangerous; warn the user about it.
@@ -382,7 +400,7 @@ public class Bootstrap {
      */
     public void saveConfiguration() throws IOException {
         // Open file
-        DataOutputStream out = new DataOutputStream(new FileOutputStream(CONFIG_LOCATION));
+        DataOutputStream out = new DataOutputStream(new FileOutputStream(new File(configLocation)));
 
         // Write the new contents
         String result = jsonParser.toJson(configuration);
