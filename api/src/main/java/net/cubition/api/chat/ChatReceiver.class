@@ -2,7 +2,18 @@ package net.cubition.api.chat;
 
 public interface ChatRecevier {
 	
+	/**
+	 * Sends a (formatted) message to this chat receiver
+	 * 
+	 * @param message the (formatted) message
+	 */
 	public void sendMessage (ChatMessage message);
+	
+	/**
+	 * Sends a raw message tto this chat receiver
+	 *
+	 * @param message the raw message
+	 */
 	public void sendMessage (String message);
 	
 }
