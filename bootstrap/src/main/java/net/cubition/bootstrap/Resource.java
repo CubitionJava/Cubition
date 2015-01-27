@@ -182,6 +182,7 @@ public class Resource implements Serializable {
             String extension = source.toLowerCase().endsWith(".jar") ? ".jar" : ".zip";
 
             this.localPath += extension;
+            LOG.debug("Grabbing " + source + "...");
 
             // Do it
             try (FileOutputStream localOut = new FileOutputStream(this.localPath);
@@ -192,6 +193,7 @@ public class Resource implements Serializable {
             return true;
         }
 
+        LOG.debug("Grabbing " + remotePath + "...");
         // Grab the file, as described by the JSON file.
         try (FileOutputStream localOut = new FileOutputStream(this.localPath);
              InputStream content = new BufferedInputStream(new URL(remotePath).openStream())) {
@@ -280,14 +282,11 @@ public class Resource implements Serializable {
         // Open a basic stream, if possible
         URL jsonURL = new URL(remotePath + ".json");
 
-        // Don't copy to yourself
-        if (!(jsonURL.toString().startsWith("file:/") && jsonURL.toString().substring("file:".length()).equals(localPath + ".json"))) {
-            LOG.debug("Grabbing " + jsonURL.toString());
+        LOG.debug("Grabbing " + jsonURL.toString() + "...");
 
-            try (InputStream jsonIn = new BufferedInputStream(jsonURL.openStream());
-                 OutputStream jsonOut = new FileOutputStream(this.localPath + ".json")) {
-                IOUtils.copy(jsonIn, jsonOut);
-            }
+        try (InputStream jsonIn = new BufferedInputStream(jsonURL.openStream());
+             OutputStream jsonOut = new FileOutputStream(this.localPath + ".json")) {
+            IOUtils.copy(jsonIn, jsonOut);
         }
 
         // Parse our new found JSON file
