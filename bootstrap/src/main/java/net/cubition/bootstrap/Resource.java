@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -224,6 +226,7 @@ public class Resource implements Serializable {
 
         // Open a basic stream, if possible
         URL jsonURL = new URL(remotePath + ".json");
+        LOG.debug("Grabbing " + jsonURL.toString());
         try (InputStream jsonIn = new BufferedInputStream(jsonURL.openStream());
              OutputStream jsonOut = new FileOutputStream(this.localPath + ".json")) {
             IOUtils.copy(jsonIn, jsonOut);
@@ -238,11 +241,13 @@ public class Resource implements Serializable {
         JsonObject description = new Gson().fromJson(contents, JsonObject.class);
 
         // Grab the extension from this description
-        String extension = description.has("type") ? description.get("type").getAsString() : "jar";
+        String extension = description.has("type") ? "." + description.get("type").getAsString() : "jar";
 
         // Download the actual Resource now we have the info we need
         this.localPath += "." + extension;
         remotePath += "." + extension;
+
+        if (Files.exists(Paths.get(localPath))) return true;
 
         LOG.debug("Built final local destination for resource "
                 + (author + ":" + name + ":" + version) + ": " + this.localPath);
