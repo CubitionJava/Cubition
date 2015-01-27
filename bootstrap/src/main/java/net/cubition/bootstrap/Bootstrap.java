@@ -5,6 +5,7 @@ import com.beust.jcommander.Parameter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.cubition.bootstrap.config.LaunchConfig;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
@@ -68,6 +69,13 @@ public class Bootstrap {
      */
     @Parameter(names = {"-h", "--help"}, description = "Show this help page")
     private boolean showHelp = false;
+
+    /**
+     * Parameter:
+     *     Errases the mod directory, to enable mods to be downloaded again.
+     */
+    @Parameter(names = {"--clean"}, description = "Erase mods directory, and build from scratch")
+    private boolean cleanBuild = false;
 
 
     /**
@@ -137,6 +145,19 @@ public class Bootstrap {
             // Success!
             // Give the user a chance to set things up.
             System.exit(0);
+        }
+
+        // Clean dependencies, if needed
+        if (cleanBuild) {
+            LOG.info("Producing clean build, as requested.");
+            File mods = new File("mods");
+            if (mods.exists()) {
+                try {
+                    FileUtils.deleteDirectory(mods);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         // Build dependencies
