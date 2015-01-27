@@ -201,8 +201,8 @@ public class Bootstrap {
             boolean success = r.downloadLocalCopy();
 
             if (!success) {
-                System.err.println("ERROR: Could not get resource " + r.getName() + " from source " + r.getRemoteFile());
-                System.err.println("ERROR: FATAL");
+                System.err.println("ERROR: Could not get resource \"" + r.getName() +
+                        "\" from source \"" + r.getRemoteFile() + "\".");
                 System.exit(1);
             }
         });
