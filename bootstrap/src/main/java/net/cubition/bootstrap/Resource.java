@@ -226,11 +226,15 @@ public class Resource implements Serializable {
 
         // Open a basic stream, if possible
         URL jsonURL = new URL(remotePath + ".json");
-        LOG.debug("Grabbing " + jsonURL.toString());
 
-        try (InputStream jsonIn = new BufferedInputStream(jsonURL.openStream());
-             OutputStream jsonOut = new FileOutputStream(this.localPath + ".json")) {
-            IOUtils.copy(jsonIn, jsonOut);
+        // Don't copy files to themselves
+        if (!jsonURL.toString().startsWith("file:/")) {
+            LOG.debug("Grabbing " + jsonURL.toString());
+
+            try (InputStream jsonIn = new BufferedInputStream(jsonURL.openStream());
+                OutputStream jsonOut = new FileOutputStream(this.localPath + ".json")) {
+                IOUtils.copy(jsonIn, jsonOut);
+            }
         }
 
         // Parse our new found JSON file
@@ -250,12 +254,15 @@ public class Resource implements Serializable {
 
         if (Files.exists(Paths.get(localPath))) return true;
 
-        LOG.debug("Built final local destination for resource "
-                + (author + ":" + name + ":" + version) + ": " + this.localPath);
+        // Don't copy into yourself
+        if (!remotePath.startsWith("file:/")) {
+            LOG.debug("Built final local destination for resource "
+                    + (author + ":" + name + ":" + version) + ": " + this.localPath);
 
-        try (FileOutputStream localOut = new FileOutputStream(this.localPath);
-             InputStream content = new BufferedInputStream(new URL(remotePath).openStream())) {
-            IOUtils.copy(content, localOut);
+            try (FileOutputStream localOut = new FileOutputStream(this.localPath);
+                 InputStream content = new BufferedInputStream(new URL(remotePath).openStream())) {
+                IOUtils.copy(content, localOut);
+            }
         }
 
         // Yay! I did it mom!

@@ -207,7 +207,6 @@ public class Bootstrap {
 
         // Create a very basic thread pool
         final ExecutorService pool = Executors.newFixedThreadPool(16);
-
         final CountDownLatch success = new CountDownLatch(1);
 
         dependencyTree.forEach((r) -> pool.submit(() -> {
