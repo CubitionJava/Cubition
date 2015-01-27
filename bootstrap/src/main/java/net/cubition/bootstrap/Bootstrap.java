@@ -172,7 +172,13 @@ public class Bootstrap {
         for (Resource resource :
                 dependencyTree.toArray(new Resource[dependencyTree.size()])) {
             // Add them together
-            Resource[] resources = resource.pollDependenciesRecursively();
+            Resource[] resources = new Resource[0];
+            try {
+                resources = resource.pollDependenciesRecursively();
+            } catch (IOException e) {
+                LOG.error("Error while polling dependencies", e);
+                System.exit(2);
+            }
 
             // Add it, checking for duplicates
             for (Resource modResource : resources) {
@@ -204,6 +210,10 @@ public class Bootstrap {
                 dependencyTree.add(modResource);
             }
         }
+
+
+        LOG.info("Built " + dependencyTree.size() + " dependencies.");
+        LOG.info("Downloading dependencies...");
 
         // Create a very basic thread pool
         final ExecutorService pool = Executors.newFixedThreadPool(16);

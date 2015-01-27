@@ -1,6 +1,7 @@
 package net.cubition.bootstrap;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -9,8 +10,6 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -53,6 +52,16 @@ public class Resource implements Serializable {
      * The local copy of this resource, including where it is stored.
      */
     private transient String localPath;
+
+    /**
+     * The remote path of this resource.
+     */
+    private transient String remotePath;
+
+    /**
+     * The remote description of this resource from a server.
+     */
+    private transient JsonObject description;
 
     /**
      * Default Constructor for GSON
@@ -146,12 +155,65 @@ public class Resource implements Serializable {
      * @return If the operation was successful or not
      */
     public boolean downloadLocalCopy() throws IOException {
-        // Check if we are using a local file
+        // Download JSON if required
+        if (description == null) {
+            if (!pullJson()) {
+                return false;
+            }
+        }
+
         if (source != null && source.startsWith("file://")
                 && (source.toLowerCase().endsWith(".jar") || source.toLowerCase().endsWith(".zip"))) {
             // We are, use the raw source instead
             LOG.warn("Using local files for dependencies isn't recommended @ " + toString());
 
+            localPath = source.substring("file://".length());
+            return true;
+        }
+
+        if (this.existsLocally()) {
+            return true;
+        }
+
+        if (source != null && (source.toLowerCase().endsWith(".jar") || source.toLowerCase().endsWith(".zip"))) {
+            LOG.warn("Directly using files without a repo isn't recommended @ " + toString());
+
+            // Download it
+            String extension = source.toLowerCase().endsWith(".jar") ? ".jar" : ".zip";
+
+            this.localPath += extension;
+
+            // Do it
+            try (FileOutputStream localOut = new FileOutputStream(this.localPath);
+                 InputStream content = new BufferedInputStream(new URL(source).openStream())) {
+                IOUtils.copy(content, localOut);
+            }
+
+            return true;
+        }
+
+        // Grab the file, as described by the JSON file.
+        try (FileOutputStream localOut = new FileOutputStream(this.localPath);
+             InputStream content = new BufferedInputStream(new URL(remotePath).openStream())) {
+            IOUtils.copy(content, localOut);
+        }
+
+        // Yay! I did it mom!
+        return true;
+    }
+
+    /**
+     * Downloads a local copy of the JSON file into memory.
+     */
+    private boolean pullJson() throws IOException {
+        if (description != null) {
+            return true;
+        }
+
+        // Check if we are using a local file
+        if (source != null && source.startsWith("file://")
+                && (source.toLowerCase().endsWith(".jar") || source.toLowerCase().endsWith(".zip"))) {
+            // We are, use the raw source instead
             localPath = source.substring("file://".length());
             return true;
         }
@@ -181,19 +243,7 @@ public class Resource implements Serializable {
 
         // Make sure the remote source is a repo, not a file.
         if (source != null && (source.toLowerCase().endsWith(".jar") || source.toLowerCase().endsWith(".zip"))) {
-            LOG.warn("Directly using files without a repo isn't recommended @ " + toString());
-
-            // Download it
-            String extension = source.toLowerCase().endsWith(".jar") ? ".jar" : ".zip";
-
-            this.localPath += extension;
-
-            // Do it
-            try (FileOutputStream localOut = new FileOutputStream(this.localPath);
-                 InputStream content = new BufferedInputStream(new URL(source).openStream())) {
-                IOUtils.copy(content, localOut);
-            }
-
+            // Ignore it, we don't need a Resource downloaded here
             return true;
         }
 
@@ -205,7 +255,7 @@ public class Resource implements Serializable {
 
         // Currently, we don't know what kind of file we are talking about. Lets grab this information first.
         // Build the remote path - we generate this on the fly.
-        String remotePath = source;
+        remotePath = source;
 
         // If it is null, it is from the default repo
         if (remotePath == null) {
@@ -239,24 +289,17 @@ public class Resource implements Serializable {
             contents = IOUtils.toString(jsonIn);
         }
 
-        JsonObject description = new Gson().fromJson(contents, JsonObject.class);
+        description = new Gson().fromJson(contents, JsonObject.class);
 
         // Grab the extension from this description
         String extension = description.has("type") ? description.get("type").getAsString() : "jar";
 
-        // Download the actual Resource now we have the info we need
+        // Build info for others to use
         this.localPath += "." + extension;
         remotePath += "." + extension;
 
-        if (Files.exists(Paths.get(localPath))) return true;
-
         LOG.debug("Built final local destination for resource "
                 + (author + ":" + name + ":" + version) + ": " + this.localPath);
-
-        try (FileOutputStream localOut = new FileOutputStream(this.localPath);
-             InputStream content = new BufferedInputStream(new URL(remotePath).openStream())) {
-            IOUtils.copy(content, localOut);
-        }
 
         // Yay! I did it mom!
         return true;
@@ -280,9 +323,27 @@ public class Resource implements Serializable {
      *
      * @return The dependencies for this Resource, if any.
      */
-    public Resource[] pollDependencies() {
-        // TODO: This is a placeholder. Poll dependencies here.
-        return new Resource[0];
+    public Resource[] pollDependencies() throws IOException {
+        if (!pullJson() || description == null) {
+            // We can't get the JSON file
+            return new Resource[0];
+        }
+
+        ArrayList<Resource> dependencies = new ArrayList<>();
+        if (description.has("dependencies")) {
+            for (JsonElement str : description.get("dependencies").getAsJsonArray()) {
+                JsonObject object = str.getAsJsonObject();
+
+                // Rebuild it manually
+                Resource resource = new Resource(object.get("name").getAsString(),
+                        object.get("author").getAsString(),
+                        object.get("version").getAsString(),
+                        object.has("source") ? new URL(object.get("source").getAsString()) : null);
+                dependencies.add(resource);
+            }
+        }
+
+        return dependencies.toArray(new Resource[dependencies.size()]);
     }
 
     /**
@@ -290,7 +351,7 @@ public class Resource implements Serializable {
      *
      * @return The recursive dependencies for this Resource, if any.
      */
-    public Resource[] pollDependenciesRecursively() {
+    public Resource[] pollDependenciesRecursively() throws IOException {
         ArrayList<Resource> resources = new ArrayList<>();
 
         for (Resource resource : pollDependencies()) {
