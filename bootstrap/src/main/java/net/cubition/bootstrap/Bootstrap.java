@@ -17,6 +17,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * The Bootstrap class allows for dynamic and easy configuration of both server and clients, and allows for them
@@ -197,15 +201,35 @@ public class Bootstrap {
             }
         }
 
-        dependencyTree.forEach((r) -> {
-            boolean success = r.downloadLocalCopy();
+        // Create a very basic thread pool
+        final ExecutorService pool = Executors.newFixedThreadPool(16);
 
-            if (!success) {
-                System.err.println("ERROR: Could not get resource \"" + r.getName() +
-                        "\" from source \"" + r.getRemoteFile() + "\".");
-                System.exit(1);
+        final CountDownLatch success = new CountDownLatch(1);
+
+        dependencyTree.forEach((r) -> pool.submit(() -> {
+            if (!r.downloadLocalCopy()) {
+                success.countDown();
             }
-        });
+        }));
+
+        pool.shutdown();
+        try {
+            if (!pool.awaitTermination(60, TimeUnit.SECONDS)) {
+                System.err.println("ERROR: Failed to download dependencies in time!");
+                pool.shutdownNow();
+                System.exit(2);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            System.exit(2);
+        }
+
+        // Make sure all succeeded!
+        if (success.getCount() != 1) {
+            // It failed
+            System.err.println("ERROR: Failed to download all dependencies. Check logs, and try again.");
+            System.exit(2);
+        }
 
         // Alright, pull the main server from the Resource bundle
         dependencyTree.remove(configuration.getExecutable());
