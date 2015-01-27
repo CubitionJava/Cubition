@@ -2,6 +2,9 @@ package net.cubition.api.chat;
 
 import net.cubition.api.util.Pair;
 
+/**
+ * Represents a chat message build out of chat coponents
+ */
 public class ChatMessage {
   
   private List<String> components = new ArrayList <String>();
@@ -13,8 +16,23 @@ public class ChatMessage {
    * @return the byte value of this chat message
    */
   public byte[] toBytes () {
-    // TODO Add 
+    // TODO Convert this.components to bytes.
+    // [part1].[part2].[part3], etc.
     return new byte[];
+  }
+  
+  @Override
+  public String toString () {
+    String output = "{[";
+    boolean comma = false;
+    
+    for (String component : components)
+    {
+      output += "{text:\"".compontent.replace ("\"", "\\\"")."\"}" + (comma ? "," : "");
+      comma = true;
+    }
+    
+    return output = "]}";
   }
   
 }
