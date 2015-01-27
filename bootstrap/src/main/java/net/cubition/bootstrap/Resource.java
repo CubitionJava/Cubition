@@ -231,6 +231,9 @@ public class Resource implements Serializable {
                 .append(name).append("_").append(version)
                 .toString();
 
+        // Get Absolute Path
+        this.localPath = new File(this.localPath).getAbsolutePath();
+
         // Check the parent folders for the localpath exist
         File localPathFolderDir = new File(this.localPath).getParentFile();
         if (!localPathFolderDir.exists()) {
@@ -263,7 +266,7 @@ public class Resource implements Serializable {
         }
 
         // Make sure it ends with a /
-        if (!source.endsWith("/")) {
+        if (source != null && !source.endsWith("/")) {
             remotePath += "/";
         }
 
@@ -277,11 +280,14 @@ public class Resource implements Serializable {
         // Open a basic stream, if possible
         URL jsonURL = new URL(remotePath + ".json");
 
-        LOG.debug("Grabbing " + jsonURL.toString());
+        // Don't copy to yourself
+        if (!(jsonURL.toString().startsWith("file:/") && jsonURL.toString().substring("file:".length()).equals(localPath + ".json"))) {
+            LOG.debug("Grabbing " + jsonURL.toString());
 
-        try (InputStream jsonIn = new BufferedInputStream(jsonURL.openStream());
-             OutputStream jsonOut = new FileOutputStream(this.localPath + ".json")) {
-            IOUtils.copy(jsonIn, jsonOut);
+            try (InputStream jsonIn = new BufferedInputStream(jsonURL.openStream());
+                 OutputStream jsonOut = new FileOutputStream(this.localPath + ".json")) {
+                IOUtils.copy(jsonIn, jsonOut);
+            }
         }
 
         // Parse our new found JSON file
