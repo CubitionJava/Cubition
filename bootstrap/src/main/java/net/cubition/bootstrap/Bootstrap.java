@@ -6,6 +6,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.cubition.bootstrap.config.LaunchConfig;
 import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Level;
+import org.apache.log4j.LogManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,6 +68,14 @@ public class Bootstrap {
      */
     @Parameter(names = {"-h", "--help"}, description = "Show this help page")
     private boolean showHelp = false;
+
+
+    /**
+     * Parameter:
+     *     Forces debug messages to appear.
+     */
+    @Parameter(names = {"--debug"}, description = "Forces debug messages to appear")
+    private boolean debug = false;
 
     /**
      * The main Bootstrap configuration. This defines Resources to be loaded, as well as other settings.
@@ -371,6 +381,11 @@ public class Bootstrap {
 
             // Exit, with 0 to indicate success
             System.exit(0);
+        }
+
+        // Enable debugging, if required
+        if (instance.debug) {
+            LogManager.getRootLogger().setLevel(Level.DEBUG);
         }
 
         // Launch the bootstrap main
