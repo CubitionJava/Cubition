@@ -23,6 +23,14 @@ public interface Mod {
     public File getDataFolder();
 
     /**
+     * Gets the resource file for this mod<br>
+     * The file is read before the mod is loaded
+     *
+     * @return The ResourceFile for this mod
+     */
+    public ModResourceFile getResourceFile();
+
+    /**
      * Initializes the Mod's state
      */
     public void initialiaze();

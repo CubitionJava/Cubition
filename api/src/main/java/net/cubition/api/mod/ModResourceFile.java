@@ -24,16 +24,38 @@ public class ModResourceFile
     private String version;
 
     /**
-     * The main
+     * The main class name or entry point for this mod
      */
     private String main;
-    private Resource []dependencies;
 
-    public static final class Resource
+    /**
+     * The dependencies for this mod
+     */
+    private Dependency []dependencies;
+
+    /**
+     * A dependency for a mod
+     */
+    public static final class Dependency
     {
+        /**
+         * The name
+         */
         private String name;
+
+        /**
+         * The author
+         */
         private String author;
+
+        /**
+         * The version
+         */
         private String version;
+
+        /**
+         * The source
+         */
         private String source;
     }
 }
