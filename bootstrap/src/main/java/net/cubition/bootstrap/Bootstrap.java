@@ -321,9 +321,12 @@ public class Bootstrap {
 
         values.put("mods", mods);
 
-        // Poll it for standard imports
-        // TODO: Read configuration
-        for (String checkPath : EXECUTABLE_ENDPOINTS) {
+        if (mainExecutable.getRemoteDescription() != null
+                && mainExecutable.getRemoteDescription().has("mainClass")) {
+            // Woo - this resource defines its own mainClass - lets check there.
+            String checkPath = mainExecutable.getRemoteDescription().get("mainClass").getAsString();
+            LOG.debug("Found mainClass attribute in executable Resource description: " + checkPath);
+
             try {
                 Class<?> checkClass = loader.loadClass(checkPath);
                 // Check this classes methods
@@ -342,10 +345,33 @@ public class Bootstrap {
                     | InvocationTargetException | IllegalAccessException e) {
                 e.printStackTrace();
             }
+        } else {
+            LOG.debug("No mainClass attribute found. Using a set of defaults...");
+            // Poll it for standard imports
+            for (String checkPath : EXECUTABLE_ENDPOINTS) {
+                try {
+                    Class<?> checkClass = loader.loadClass(checkPath);
+                    // Check this classes methods
+                    for (Method method : checkClass.getDeclaredMethods()) {
+                        if (method.getName().equalsIgnoreCase("entry")) {
+                            LOG.info("Launching...");
+                            Object result = method.invoke(null, values);
+                            if (result != null && result instanceof Number) {
+                                System.exit(((Number) result).intValue());
+                            } else {
+                                System.exit(0);
+                            }
+                        }
+                    }
+                } catch (ClassNotFoundException ignored) {
+                } catch (InvocationTargetException | IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         // We shouldn't be here!
-        LOG.error("No entry point found in the executable .jar.");
+        LOG.error("No entry point found in the executable Resource.");
         System.exit(1);
     }
 

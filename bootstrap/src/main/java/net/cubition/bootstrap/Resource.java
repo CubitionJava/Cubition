@@ -326,6 +326,15 @@ public class Resource implements Serializable {
     }
 
     /**
+     * Grabs the remote JSON file, if it has been downloaded yet.
+     *
+     * @return A JsonObject representing the remote JSON contents of this Resource, if available and downloaded.
+     */
+    public JsonObject getRemoteDescription() {
+        return description;
+    }
+
+    /**
      * Poll dependencies for this Resource.
      *
      * @return The dependencies for this Resource, if any.
