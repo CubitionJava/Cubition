@@ -283,11 +283,13 @@ public class Resource implements Serializable {
         // Open a basic stream, if possible
         URL jsonURL = new URL(remotePath + ".json");
 
-        LOG.debug("Grabbing " + jsonURL.toString() + "...");
+        if (!(jsonURL.toString().startsWith("file:") && jsonURL.toString().substring("file:".length()).equals(this.localPath + ".json"))) {
+            LOG.debug("Grabbing " + jsonURL.toString() + "...");
 
-        try (InputStream jsonIn = new BufferedInputStream(jsonURL.openStream());
-             OutputStream jsonOut = new FileOutputStream(this.localPath + ".json")) {
-            IOUtils.copy(jsonIn, jsonOut);
+            try (InputStream jsonIn = new BufferedInputStream(jsonURL.openStream());
+                 OutputStream jsonOut = new FileOutputStream(this.localPath + ".json")) {
+                IOUtils.copy(jsonIn, jsonOut);
+            }
         }
 
         // Parse our new found JSON file
