@@ -48,7 +48,7 @@ public class ServerBaseController implements ServerController {
         this.modFiles.forEach((s) -> modManager.load(s));
 
         // Call initialize() on all Mods
-        this.modManager.getMods().forEach((m) -> m.initiliaze());
+        this.modManager.getMods().forEach((m) -> m.initialiaze());
 
         this.initialized = true;
     }
