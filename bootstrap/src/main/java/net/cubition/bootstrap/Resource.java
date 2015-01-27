@@ -1,17 +1,12 @@
 package net.cubition.bootstrap;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import org.apache.commons.io.IOUtils;
+
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
-import java.nio.file.Paths;
-
-import java.io.File;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -44,58 +39,14 @@ public class Resource implements Serializable {
     private String version;
 
     /**
-     * The type of the resource. Used as the file's extension
+     * The download repository for the resource. This can also link to a local file.
      */
-    private String type;
+    private String source;
 
     /**
-     * The download repository for the resource
-     */
-    private URL source;
-
-    /**
-     * The exact path to the resource
-     * Excludes the type extension
-     */
-    private String path;
-
-    /**
-     * The local copy of this resource
+     * The local copy of this resource, including where it is stored.
      */
     private transient String localPath;
-
-    /**
-     * The remote path to this resource
-     */
-    private transient String remotePath;
-
-    /**
-     * Weather or not initialize() has been called yet
-     */
-    private transient boolean initialized = false;
-
-    /**
-     * Download a file from the source URL
-     *
-     * @param file the URL to download
-     * @param output the output file
-     * @return success
-     */
-    private static boolean downloadFile(URL file, String output, boolean force) {
-        if (!force && Paths.get(output).toFile().exists()) return true;
-
-        System.out.println("Grabbing " + file.toString() + "...");
-
-        try {
-            ReadableByteChannel rbc = Channels.newChannel(file.openStream());
-            FileOutputStream fos = new FileOutputStream(output);
-            fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-        } catch (IOException ex) {
-            return false;
-        }
-
-        return Paths.get(output).toFile().exists();
-    }
 
     /**
      * Default Constructor for GSON
@@ -109,11 +60,10 @@ public class Resource implements Serializable {
      *
      * @param name The name of this resource
      * @param author The author of this resource
-     * @param type The type of this resource
      * @param version The version of this resource
      */
-    public Resource(String name, String author, String type, String version) {
-        this(name, author, type, version, null);
+    public Resource(String name, String author, String version) {
+        this(name, author, version, null);
     }
 
     /**
@@ -122,46 +72,13 @@ public class Resource implements Serializable {
      * @param name The name of this resource
      * @param author The author of this resource
      * @param version The version of this resource
-     * @param type The type of this resource
      * @param source The custom repo of this resource
      */
-    public Resource(String name, String author, String type, String version, URL source) {
-        this.type = type;
+    public Resource(String name, String author, String version, URL source) {
         this.name = name;
         this.author = author;
         this.version = version;
-        this.source = source;
-
-        this.initialize();
-    }
-
-    /**
-     * Initializes this resource.<br>
-     *     Called after Deserialization or from the constructor
-     */
-    private void initialize() {
-        if (this.initialized) return;
-
-        // Sanitize source Field
-        if (this.source != null && !this.source.toString().equalsIgnoreCase(Bootstrap.DEFAULT_RESOURCE_SERVER)) {
-            if (this.source.toString().startsWith("file://"))
-                System.out.println("WARNING: Using local sources is bad practice (" + source + ")");
-        } else {
-            this.source = null;
-        }
-
-        if (this.path == null) {
-            // Derive paths
-            String separator = FileSystems.getDefault().getSeparator();
-            this.localPath = "mods" + separator + author + separator + name + separator + name + "_" + version;
-            this.remotePath = ((source == null) ? Bootstrap.DEFAULT_RESOURCE_SERVER : source) +
-                    author + "/" + name + "/" + name + "_" + version;
-        } else {
-            this.localPath = this.path;
-            this.remotePath = this.path;
-        }
-
-        this.initialized = true;
+        this.source = source != null ? source.toString() : null;
     }
 
     /**
@@ -192,20 +109,11 @@ public class Resource implements Serializable {
     }
 
     /**
-     * Returns the type of this resource
-     *
-     * @return The type of this resource
-     */
-    public String getType() {
-        return type;
-    }
-
-    /**
      * Returns the repository for this resource
      *
      * @return The repository for this resource
      */
-    public URL getSource() {
+    public URL getSource() throws MalformedURLException {
         if (this.source == null) {
             try {
                 return new URL(Bootstrap.DEFAULT_RESOURCE_SERVER);
@@ -214,7 +122,7 @@ public class Resource implements Serializable {
             }
         }
 
-        return this.source;
+        return new URL(this.source);
     }
 
     /**
@@ -223,10 +131,7 @@ public class Resource implements Serializable {
      * @return Whether of not this resource needs to be downloaded
      */
     public boolean existsLocally() {
-        if (!this.initialized) this.initialize();
-
-        return (Paths.get(this.localPath + "." + this.type).toFile().exists()) &&
-               (Paths.get(this.localPath + ".json").toFile().exists());
+        return this.localPath != null && new File(this.localPath).exists();
     }
 
     /**
@@ -234,26 +139,107 @@ public class Resource implements Serializable {
      *
      * @return If the operation was successful or not
      */
-    public boolean downloadLocalCopy() {
-        if (this.existsLocally()) return true;
+    public boolean downloadLocalCopy() throws IOException {
+        // Check if we are using a local file
+        if (source != null && source.startsWith("file://")) {
+            // We are, use the raw source instead
+            System.out.println("WARNING: Using local files for dependencies isn't recommended @ " + toString());
 
-        Paths.get(this.localPath + ".json").toFile().getAbsoluteFile().getParentFile().mkdirs();
-
-        try {
-            if (!Resource.downloadFile(new URL(this.remotePath + "." + this.type),  this.localPath + "." + this.type,  false)) return false;
-            if (!Resource.downloadFile(new URL(this.remotePath + ".json"), this.localPath + ".json", false)) return false;
-        } catch (MalformedURLException ex) {
-            System.out.println("ERROR: Invalid URL " + this.remotePath + " for resource " + this.getName());
-            return false;
+            localPath = source.substring("file://".length());
+            return true;
         }
 
+        // If the file already exists, ignore it
+        if (this.existsLocally()) {
+            return true;
+        }
+
+        // Build local path then
+        this.localPath = new StringBuilder()
+                .append("mods").append(File.separator)
+                .append(author).append(File.separator)
+                .append(name).append(File.separator)
+                .append(name).append("_").append(version)
+                .toString();
+
+        // Check the parent folders for the localpath exist
+        File localPathFolderDir = new File(this.localPath).getParentFile();
+        if (!localPathFolderDir.exists()) {
+            // Create some folders
+            if (!localPathFolderDir.mkdirs()) {
+                System.err.println("ERROR: Failed to create directory structure @ " + toString());
+                return false;
+            }
+        }
+
+        // Make sure the remote source is a repo, not a file.
+        if (source != null && (source.toLowerCase().endsWith(".jar") || source.toLowerCase().endsWith(".zip"))) {
+            System.out.println("WARNING: Directly using files without a repo isn't recommended @ " + toString());
+
+            // Download it
+            String extension = source.toLowerCase().endsWith(".jar") ? ".jar" : ".zip";
+
+            this.localPath += extension;
+
+            // Do it
+            try (FileOutputStream localOut = new FileOutputStream(this.localPath);
+                 InputStream content = new BufferedInputStream(new URL(source).openStream())) {
+                IOUtils.copy(content, localOut);
+            }
+
+            return true;
+        }
+
+        // Currently, we don't know what kind of file we are talking about. Lets grab this information first.
+        // Build the remote path - we generate this on the fly.
+        String remotePath = source;
+
+        // If it is null, it is from the default repo
+        if (remotePath == null) {
+            remotePath = Bootstrap.DEFAULT_RESOURCE_SERVER;
+        }
+
+        // Make sure it ends with a /
+        if (!source.endsWith("/")) {
+            remotePath += "/";
+        }
+
+        remotePath = new StringBuilder()
+                .append(remotePath)
+                .append(author).append("/")
+                .append(name).append("/")
+                .append(name).append("_").append(version)
+                .toString();
+
+        // Open a basic stream, if possible
+        URL jsonURL = new URL(remotePath + ".json");
+        try (InputStream jsonIn = new BufferedInputStream(jsonURL.openStream());
+             OutputStream jsonOut = new FileOutputStream(this.localPath + ".json")) {
+            IOUtils.copy(jsonIn, jsonOut);
+        }
+
+        // Parse our new found JSON file
+        String contents;
+        try (InputStream jsonIn = new FileInputStream(this.localPath + ".json")) {
+            contents = IOUtils.toString(jsonIn);
+        }
+
+        JsonObject description = new Gson().fromJson(contents, JsonObject.class);
+
+        // Grab the extension from this description
+        String extension = description.has("type") ? description.get("type").getAsString() : "jar";
+
+        // Download the actual Resource now we have the info we need
+        this.localPath += extension;
+        remotePath += extension;
+
+        try (FileOutputStream localOut = new FileOutputStream(this.localPath);
+             InputStream content = new BufferedInputStream(new URL(remotePath).openStream())) {
+            IOUtils.copy(content, localOut);
+        }
+
+        // Yay! I did it mom!
         return true;
-    }
-
-    public File getRemoteFile() {
-        if (!this.initialized) this.initialize();
-
-        return new File(this.remotePath + "." + this.type);
     }
 
     /**
@@ -266,7 +252,7 @@ public class Resource implements Serializable {
             return null;
         }
 
-        return new File(this.localPath + "." + this.type);
+        return new File(this.localPath);
     }
 
     /**
@@ -275,8 +261,6 @@ public class Resource implements Serializable {
      * @return The dependencies for this Resource, if any.
      */
     public Resource[] pollDependencies() {
-        if (!this.initialized) this.initialize();
-
         // TODO: This is a placeholder. Poll dependencies here.
         return new Resource[0];
     }
@@ -302,7 +286,6 @@ public class Resource implements Serializable {
         return "Resource{" +
                 "name='" + name + '\'' +
                 ", author='" + author + '\'' +
-                ", type='" + type + '\'' +
                 ", version='" + version + '\'' +
                 ", source='" + source + '\'' +
                 '}';

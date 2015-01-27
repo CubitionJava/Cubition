@@ -207,7 +207,13 @@ public class Bootstrap {
         final CountDownLatch success = new CountDownLatch(1);
 
         dependencyTree.forEach((r) -> pool.submit(() -> {
-            if (!r.downloadLocalCopy()) {
+            try {
+                if (!r.downloadLocalCopy()) {
+                    success.countDown();
+                }
+            } catch (IOException e) {
+                System.err.println("ERROR: Error while download Resource @ " + r + ":");
+                e.printStackTrace();
                 success.countDown();
             }
         }));
