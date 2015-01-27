@@ -153,11 +153,12 @@ public class Resource implements Serializable {
      * Downloads a local copy of this Resource
      *
      * @return If the operation was successful or not
+     * @param modDir The parent destination for the resulting file
      */
-    public boolean downloadLocalCopy() throws IOException {
+    public boolean downloadLocalCopy(File modDir) throws IOException {
         // Download JSON if required
         if (description == null) {
-            if (!pullJson()) {
+            if (!pullJson(modDir)) {
                 return false;
             }
         }
@@ -207,7 +208,7 @@ public class Resource implements Serializable {
     /**
      * Downloads a local copy of the JSON file into memory.
      */
-    private boolean pullJson() throws IOException {
+    private boolean pullJson(File modDir) throws IOException {
         if (description != null) {
             return true;
         }
@@ -227,7 +228,7 @@ public class Resource implements Serializable {
 
         // Build local path then
         this.localPath = new StringBuilder()
-                .append("mods").append(File.separator)
+                .append(modDir.getPath()).append(File.separator)
                 .append(author).append(File.separator)
                 .append(name).append(File.separator)
                 .append(name).append("_").append(version)
@@ -328,9 +329,10 @@ public class Resource implements Serializable {
      * Poll dependencies for this Resource.
      *
      * @return The dependencies for this Resource, if any.
+     * @param modDir Where to store resulting .json files locally.
      */
-    public Resource[] pollDependencies() throws IOException {
-        if (!pullJson() || description == null) {
+    public Resource[] pollDependencies(File modDir) throws IOException {
+        if (!pullJson(modDir) || description == null) {
             // We can't get the JSON file
             return new Resource[0];
         }
@@ -356,13 +358,14 @@ public class Resource implements Serializable {
      * Poll dependencies for this Resource, grabbing sub-dependencies as required.
      *
      * @return The recursive dependencies for this Resource, if any.
+     * @param modDir Where to store resulting .json files locally.
      */
-    public Resource[] pollDependenciesRecursively() throws IOException {
+    public Resource[] pollDependenciesRecursively(File modDir) throws IOException {
         ArrayList<Resource> resources = new ArrayList<>();
 
-        for (Resource resource : pollDependencies()) {
+        for (Resource resource : pollDependencies(modDir)) {
             resources.add(resource);
-            Collections.addAll(resources, resource.pollDependenciesRecursively());
+            Collections.addAll(resources, resource.pollDependenciesRecursively(modDir));
         }
 
         return resources.toArray(new Resource[resources.size()]);

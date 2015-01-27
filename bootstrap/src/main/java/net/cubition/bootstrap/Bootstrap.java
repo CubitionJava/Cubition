@@ -85,6 +85,16 @@ public class Bootstrap {
     @Parameter(names = {"--debug"}, description = "Forces debug messages to appear")
     private boolean debug = false;
 
+
+    /**
+     * Defines where to store mod files.
+     *
+     * Parameter:
+     *     Allows for changes to the final mod directory, if required.
+     */
+    @Parameter(names = {"--modDir"}, description = "Sets the target directory for mods to be installed under")
+    private String modDir = "mods";
+
     /**
      * The main Bootstrap configuration. This defines Resources to be loaded, as well as other settings.
      */
@@ -147,13 +157,15 @@ public class Bootstrap {
             System.exit(0);
         }
 
+        // Build complete mod directory
+        File modDir = new File(this.modDir);
+
         // Clean dependencies, if needed
         if (cleanBuild) {
             LOG.info("Producing clean build, as requested.");
-            File mods = new File("mods");
-            if (mods.exists()) {
+            if (modDir.exists()) {
                 try {
-                    FileUtils.deleteDirectory(mods);
+                    FileUtils.deleteDirectory(modDir);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -205,7 +217,7 @@ public class Bootstrap {
             // Add them together
             Resource[] resources = new Resource[0];
             try {
-                resources = resource.pollDependenciesRecursively();
+                resources = resource.pollDependenciesRecursively(modDir);
             } catch (IOException e) {
                 LOG.error("Error while polling dependencies", e);
                 System.exit(2);
@@ -252,7 +264,7 @@ public class Bootstrap {
 
         dependencyTree.forEach((r) -> pool.submit(() -> {
             try {
-                if (!r.downloadLocalCopy()) {
+                if (!r.downloadLocalCopy(modDir)) {
                     success.countDown();
                 }
             } catch (IOException e) {
