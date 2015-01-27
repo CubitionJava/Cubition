@@ -195,6 +195,12 @@ public class Resource implements Serializable {
             return true;
         }
 
+        // Alright. Java URLs are dumb, and only accept absolute URLs. If the repo is local, we need to fix this.
+        if (source != null && source.startsWith("file://")) {
+            // Cool. Fix it up
+            source = new File(source.substring("file://".length())).toURI().toURL().toString();
+        }
+
         // Currently, we don't know what kind of file we are talking about. Lets grab this information first.
         // Build the remote path - we generate this on the fly.
         String remotePath = source;
@@ -235,8 +241,8 @@ public class Resource implements Serializable {
         String extension = description.has("type") ? description.get("type").getAsString() : "jar";
 
         // Download the actual Resource now we have the info we need
-        this.localPath += extension;
-        remotePath += extension;
+        this.localPath += "." + extension;
+        remotePath += "." + extension;
 
         LOG.debug("Built final local destination for resource "
                 + (author + ":" + name + ":" + version) + ": " + this.localPath);
