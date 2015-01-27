@@ -3,6 +3,8 @@ package net.cubition.bootstrap;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -18,6 +20,8 @@ import java.util.Collections;
  * {@link com.google.gson.Gson}
  */
 public class Resource implements Serializable {
+    private static final Logger LOG = LoggerFactory.getLogger(Bootstrap.class);
+
     /**
      * Provides a comment in the JSON file, helping the user with this Resource.
      */
@@ -141,9 +145,10 @@ public class Resource implements Serializable {
      */
     public boolean downloadLocalCopy() throws IOException {
         // Check if we are using a local file
-        if (source != null && source.startsWith("file://")) {
+        if (source != null && source.startsWith("file://")
+                && (source.toLowerCase().endsWith(".jar") || source.toLowerCase().endsWith(".zip"))) {
             // We are, use the raw source instead
-            System.out.println("WARNING: Using local files for dependencies isn't recommended @ " + toString());
+            LOG.warn("Using local files for dependencies isn't recommended @ " + toString());
 
             localPath = source.substring("file://".length());
             return true;
@@ -167,14 +172,14 @@ public class Resource implements Serializable {
         if (!localPathFolderDir.exists()) {
             // Create some folders
             if (!localPathFolderDir.mkdirs()) {
-                System.err.println("ERROR: Failed to create directory structure @ " + toString());
+                LOG.error("Failed to create directory structure @ " + toString());
                 return false;
             }
         }
 
         // Make sure the remote source is a repo, not a file.
         if (source != null && (source.toLowerCase().endsWith(".jar") || source.toLowerCase().endsWith(".zip"))) {
-            System.out.println("WARNING: Directly using files without a repo isn't recommended @ " + toString());
+            LOG.warn("Directly using files without a repo isn't recommended @ " + toString());
 
             // Download it
             String extension = source.toLowerCase().endsWith(".jar") ? ".jar" : ".zip";
@@ -232,6 +237,9 @@ public class Resource implements Serializable {
         // Download the actual Resource now we have the info we need
         this.localPath += extension;
         remotePath += extension;
+
+        LOG.debug("Built final local destination for resource "
+                + (author + ":" + name + ":" + version) + ": " + this.localPath);
 
         try (FileOutputStream localOut = new FileOutputStream(this.localPath);
              InputStream content = new BufferedInputStream(new URL(remotePath).openStream())) {

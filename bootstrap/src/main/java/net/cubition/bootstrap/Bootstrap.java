@@ -6,6 +6,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.cubition.bootstrap.config.LaunchConfig;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -29,6 +31,8 @@ import java.util.concurrent.TimeUnit;
  * The bootstrap also pulls any required dependencies for Resources, and installs them as well.
  */
 public class Bootstrap {
+    private static final Logger LOG = LoggerFactory.getLogger(Bootstrap.class);
+
     /**
      * The version of the Bootstrap.
      */
@@ -106,7 +110,7 @@ public class Bootstrap {
 
         // Check if we have a configuration at this point.
         if (configuration == null) {
-            System.out.println("Generating empty configuration at \"" +
+            LOG.info("Generating empty configuration at \"" +
                     CONFIG_LOCATION.getPath() + "\". Configure at will, and restart Bootstrap.");
 
             // Generate ourselves one
@@ -126,7 +130,7 @@ public class Bootstrap {
         }
 
         // Build dependencies
-        System.out.println("Building dependencies...");
+        LOG.info("Building dependencies...");
 
         // We know what we need fetch, so throw it all into a pool, and compute dependencies.
         List<Resource> dependencyTree = new ArrayList<>();
@@ -147,7 +151,7 @@ public class Bootstrap {
                     // We can't really find out which one is newer, because 'version' is a String.
                     // Instead, use the first one we find.
                     // This is dangerous; warn the user about it.
-                    System.out.println("WARNING: Duplicate Resource definition in your config.yml." +
+                    LOG.warn("Duplicate Resource definition in your config.yml." +
                             " Using first found (" + parentResource + ").");
                     // Skip adding it in the future.
                     isDuplicate = true;
@@ -183,7 +187,7 @@ public class Bootstrap {
                         // We can't really find out which one is newer, because 'version' is a String.
                         // Instead, use the first one we find.
                         // This is dangerous; warn the user about it.
-                        System.out.println("WARNING: Duplicate Resource definition in dependency for " + resource + "." +
+                        LOG.warn("Duplicate Resource definition in dependency for " + resource + "." +
                                 " Using first found (" + parentResource + ").");
                         // Skip adding it in the future.
                         isDuplicate = true;
@@ -212,8 +216,7 @@ public class Bootstrap {
                     success.countDown();
                 }
             } catch (IOException e) {
-                System.err.println("ERROR: Error while download Resource @ " + r + ":");
-                e.printStackTrace();
+                LOG.error("Error while download Resource @ " + r, e);
                 success.countDown();
             }
         }));
@@ -221,7 +224,7 @@ public class Bootstrap {
         pool.shutdown();
         try {
             if (!pool.awaitTermination(60, TimeUnit.SECONDS)) {
-                System.err.println("ERROR: Failed to download dependencies in time!");
+                LOG.error("Failed to download dependencies in time!");
                 pool.shutdownNow();
                 System.exit(2);
             }
@@ -233,7 +236,7 @@ public class Bootstrap {
         // Make sure all succeeded!
         if (success.getCount() != 1) {
             // It failed
-            System.err.println("ERROR: Failed to download all dependencies. Check logs, and try again.");
+            LOG.error("Failed to download all dependencies. Check logs, and try again.");
             System.exit(2);
         }
 
@@ -247,8 +250,7 @@ public class Bootstrap {
         try {
             mainExecutableJar = mainExecutable.getLocalFile().toURI().toURL();
         } catch (MalformedURLException e) {
-            System.err.println("Failure while importing main executable:");
-            e.printStackTrace();
+            LOG.error("Failure while importing main executable", e);
             System.exit(2);
         }
 
@@ -275,10 +277,13 @@ public class Bootstrap {
                 // Check this classes methods
                 for (Method method : checkClass.getDeclaredMethods()) {
                     if (method.getName().equalsIgnoreCase("entry")) {
-                        System.out.println("Launching...");
-                        System.out.println("-----------------------------");
-                        method.invoke(null, values);
-                        System.exit(0);
+                        LOG.info("Launching...");
+                        Object result = method.invoke(null, values);
+                        if (result != null && result instanceof Number) {
+                            System.exit(((Number) result).intValue());
+                        } else {
+                            System.exit(0);
+                        }
                     }
                 }
             } catch (ClassNotFoundException
@@ -288,7 +293,7 @@ public class Bootstrap {
         }
 
         // We shouldn't be here!
-        System.err.println("No entry point found in the executable .jar.");
+        LOG.error("No entry point found in the executable .jar.");
         System.exit(1);
     }
 
@@ -317,7 +322,7 @@ public class Bootstrap {
      */
     public static void main(String[] args) {
         // Display the opening header
-        System.out.println("Cubition Bootstrap, version " + VERSION);
+        LOG.info("Cubition Bootstrap, version " + VERSION);
 
         // Create a new instance of the Bootstrap, with empty arguments
         Bootstrap instance = new Bootstrap();
@@ -337,10 +342,12 @@ public class Bootstrap {
         } catch (Exception e) {
             // Woops! An error occured while parsing the options.
             // Tell the user what happened
-            System.out.println(e.getMessage());
+            LOG.warn(e.getMessage());
 
             // Show the documentation for Cubition bootstrap.
-            argParser.usage();
+            StringBuilder builder = new StringBuilder();
+            argParser.usage(builder);
+            LOG.info(builder.toString());
 
             // Exit, with -1 to indicate an error
             System.exit(-1);
@@ -349,7 +356,9 @@ public class Bootstrap {
         // Check if we need to display help
         if (instance.showHelp) {
             // Show the documentation for Cubition bootstrap.
-            argParser.usage();
+            StringBuilder builder = new StringBuilder();
+            argParser.usage(builder);
+            LOG.info(builder.toString());
 
             // Exit, with 0 to indicate success
             System.exit(0);
