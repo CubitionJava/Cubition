@@ -222,7 +222,7 @@ public class Bootstrap {
         }
 
 
-        LOG.info("Built " + dependencyTree.size() + " dependencies.");
+        LOG.debug("Built " + dependencyTree.size() + " dependencies.");
         LOG.info("Downloading dependencies...");
 
         // Create a very basic thread pool
