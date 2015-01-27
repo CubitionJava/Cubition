@@ -281,7 +281,7 @@ public class Resource implements Serializable {
         URL jsonURL = new URL(remotePath + ".json");
 
         // Don't copy to yourself
-        if (jsonURL.toString().startsWith("file:/")) {
+        if (!jsonURL.toString().startsWith("file:/")) {
             LOG.debug("Grabbing " + jsonURL.toString());
 
             try (InputStream jsonIn = new BufferedInputStream(jsonURL.openStream());
