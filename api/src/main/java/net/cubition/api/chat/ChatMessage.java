@@ -28,11 +28,11 @@ public class ChatMessage {
     
     for (String component : components)
     {
-      output += "{text:\"".component.replace ("\"", "\\\"")."\"}" + (comma ? "," : "");
+      output += "{text:\"" + component.replace ("\"", "\\\"") + "\"}" + (comma ? "," : "");
       comma = true;
     }
     
-    return output = "]}";
+    return output +="]}";
   }
   
 }
