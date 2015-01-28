@@ -80,6 +80,13 @@ public class Bootstrap {
     private boolean debug = false;
 
     /**
+     * Parameter:
+     *     Hides messages that are [INFO] and below
+     */
+    @Parameter(names = {"--quiet"}, description = "Hides messages that are [INFO] and below")
+    private boolean quiet = false;
+
+    /**
      * Defines where to store mod files.
      *
      * Parameter:
@@ -417,9 +424,6 @@ public class Bootstrap {
      * @param args The arguments to apply to this bootstrap session.
      */
     public static void main(String[] args) {
-        // Display the opening header
-        LOG.info("Cubition Bootstrap, version " + VERSION);
-
         // Create a new instance of the Bootstrap, with empty arguments
         Bootstrap instance = new Bootstrap();
 
@@ -436,6 +440,9 @@ public class Bootstrap {
         try {
             argParser.parse(args);
         } catch (Exception e) {
+            // Display the opening header
+            LOG.info("Cubition Bootstrap, version " + VERSION);
+
             // Woops! An error occured while parsing the options.
             // Tell the user what happened
             LOG.warn(e.getMessage());
@@ -451,6 +458,9 @@ public class Bootstrap {
 
         // Check if we need to display help
         if (instance.showHelp) {
+            // Display the opening header
+            LOG.info("Cubition Bootstrap, version " + VERSION);
+
             // Show the documentation for Cubition bootstrap.
             StringBuilder builder = new StringBuilder();
             argParser.usage(builder);
@@ -461,9 +471,26 @@ public class Bootstrap {
         }
 
         // Enable debugging, if required
-        if (instance.debug) {
+        if (instance.debug && instance.quiet) {
+            // Display the opening header
+            LOG.info("Cubition Bootstrap, version " + VERSION);
+
+            LOG.error("Conflicting arguments: --debug and --quiet");
+
+            // Show the documentation for Cubition bootstrap.
+            StringBuilder builder = new StringBuilder();
+            argParser.usage(builder);
+            LOG.info(builder.toString());
+
+            System.exit(2);
+        } else if (instance.debug) {
             LogManager.getRootLogger().setLevel(Level.DEBUG);
+        } else if (instance.quiet) {
+            LogManager.getRootLogger().setLevel(Level.WARN);
         }
+
+        // Display the opening header
+        LOG.info("Cubition Bootstrap, version " + VERSION);
 
         // Launch the bootstrap main
         instance.start();
