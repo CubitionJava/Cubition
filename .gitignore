@@ -126,3 +126,5 @@ nb-configuration.xml
 ### Cubition ###
 config.json
 mods/
+out/
+target/
