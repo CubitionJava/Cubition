@@ -1,5 +1,8 @@
 package net.cubition.api.mod;
 
+import net.cubition.api.vc.Availability;
+import net.cubition.api.vc.Versions;
+
 import java.io.File;
 
 /**
@@ -12,6 +15,7 @@ public interface Mod {
      *
      * @return the custom ServerController for this mod, or null
      */
+    @Availability(server = Versions.SERVER_DEVL_0_0_1, client = Versions.CLIENT_DEVL_0_0_1)
     public String customController();
 
     /**
@@ -20,6 +24,7 @@ public interface Mod {
      *
      * @return This Mod's Data Folder
      */
+    @Availability(server = Versions.SERVER_DEVL_0_0_1, client = Versions.CLIENT_DEVL_0_0_1)
     public File getDataFolder();
 
     /**
@@ -28,10 +33,12 @@ public interface Mod {
      *
      * @return The ResourceFile for this mod
      */
+    @Availability(server = Versions.SERVER_DEVL_0_0_1, client = Versions.CLIENT_DEVL_0_0_1)
     public ModResourceFile getResourceFile();
 
     /**
      * Initializes the Mod's state
      */
+    @Availability(server = Versions.SERVER_DEVL_0_0_1, client = Versions.CLIENT_DEVL_0_0_1)
     public void initialiaze();
 }

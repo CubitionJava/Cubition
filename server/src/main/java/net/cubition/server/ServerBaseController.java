@@ -1,10 +1,14 @@
 package net.cubition.server;
 
+import net.cubition.api.API;
 import net.cubition.api.ServerController;
 import net.cubition.api.mod.BaseModManager;
 import net.cubition.api.mod.ModManager;
 import net.cubition.api.vc.Availability;
 import net.cubition.api.vc.Versions;
+import org.apache.log4j.Level;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -18,11 +22,13 @@ import java.util.Map;
 public class ServerBaseController implements ServerController {
     public static final String WORKING_DIRECTORY = System.getProperty("user.dir");
     private static final String RESTART_SCRIPT = WORKING_DIRECTORY + "restart.sh";
+    private static final Logger logger = LogManager.getLogger("Server");
 
     private boolean initialized = false;
     private boolean running = false;
     private List<String> modFiles;
     private ModManager modManager;
+    private boolean debug;
 
     /**
      * Initializes the Server<br>
@@ -40,6 +46,10 @@ public class ServerBaseController implements ServerController {
     @Override
     public void initialize() {
         if (this.initialized) return;
+
+        // What are we?
+        logger.info(String.format("Cubition %s [Build: %X]", this.getVersion().getName(), this.getVersion().getBuild()));
+        logger.info(String.format("Running %s [Build %X]", API.getVersionName(), API.getVersionBuild()));
 
         // Create ModManager
         this.modManager = new BaseModManager();
@@ -136,17 +146,29 @@ public class ServerBaseController implements ServerController {
     }
 
     /**
+     * Gets the logger for this server
+     *
+     * @return This server's logger
+     */
+    @Override
+    public Logger getLogger() {
+        return logger;
+    }
+
+    /**
      * Method called from bootstrap to enter the default server controller<br>
      * Parses arguments, and calls out to initilize() in a new instance
      *
      * @param args Arguments to the server itself (constructed in Bootstrap)
      */
     public static void entry(Map<String, Object> args) {
-        System.out.println("Welcome to serverland!");
         ServerBaseController instance = new ServerBaseController();
         instance.modFiles = (List<String>)args.get("mods");
+        instance.debug = (boolean)args.get("debug");
 
         if (instance.modFiles == null) throw new ServerError("This program is not meant to be run directly!");
+        if (instance.debug) logger.setLevel(Level.ALL);
+        else logger.setLevel(Level.INFO);
 
         // Start the Server
         instance.initialize();

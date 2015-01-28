@@ -345,6 +345,7 @@ public class Bootstrap {
         }
 
         values.put("mods", mods);
+        values.put("debug", this.debug);
 
         if (mainExecutable.getRemoteDescription() != null
                 && mainExecutable.getRemoteDescription().has("mainClass")) {
