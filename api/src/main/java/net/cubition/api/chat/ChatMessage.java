@@ -18,7 +18,7 @@ public class ChatMessage {
   public byte[] toBytes () {
     // TODO Convert this.components to bytes.
     // [part1].[part2].[part3], etc.
-    return new byte[];
+    return new byte[0];
   }
   
   @Override
@@ -28,7 +28,7 @@ public class ChatMessage {
     
     for (String component : components)
     {
-      output += "{text:\"".compontent.replace ("\"", "\\\"")."\"}" + (comma ? "," : "");
+      output += "{text:\"".component.replace ("\"", "\\\"")."\"}" + (comma ? "," : "");
       comma = true;
     }
     
