@@ -78,4 +78,9 @@
             </plugin>
         </plugins>
     </build>
+    <organization>
+    	<name>Cubition</name>
+    	<url>http://cubition.net/</url>
+    </organization>
+    <name>The Cubition Project</name>
 </project>
