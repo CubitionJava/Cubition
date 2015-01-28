@@ -1,5 +1,7 @@
 package net.cubition.api;
 
+import net.cubition.api.vc.Versions;
+
 /**
  * API stores information about the currently running API
  */
@@ -20,6 +22,17 @@ public class API {
      */
     public static long getVersionBuild() {
         return 0x8105CCE;
+    }
+
+    /**
+     * Checks if a given server version is supported by this API
+     *
+     * @param version The Server Version to check
+     * @return Whether or not this is supported
+     */
+    public static boolean supportsServerBuild(Versions version) {
+        if (version == Versions.SERVER_DEVL_0_0_1) return true;
+        else return false;
     }
 
     /**

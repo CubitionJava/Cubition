@@ -51,6 +51,14 @@ public class ServerBaseController implements ServerController {
         logger.info(String.format("Cubition %s [Build: %X]", this.getVersion().getName(), this.getVersion().getBuild()));
         logger.info(String.format("Running %s [Build %X]", API.getVersionName(), API.getVersionBuild()));
 
+        if (!API.supportsServerBuild(this.getVersion())) {
+            logger.error(String.format("API Version %X does not support Server Version %X",
+                    API.getVersionBuild(), this.getVersion().getBuild()));
+
+            // Fail
+            System.exit(1);
+        }
+
         // Create ModManager
         this.modManager = new BaseModManager();
 
