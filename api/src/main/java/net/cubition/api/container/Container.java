@@ -1,4 +1,4 @@
-package net.cubition.container;
+package net.cubition.api.container;
 
 import net.cubition.api.item.ItemStack;
 
