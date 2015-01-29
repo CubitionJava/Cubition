@@ -212,7 +212,7 @@ public class Bootstrap {
                     // We can't really find out which one is newer, because 'version' is a String.
                     // Instead, use the first one we find.
                     // This is dangerous; warn the user about it.
-                    LOG.warn("Duplicate Resource definition in your config.yml." +
+                    LOG.warn("Duplicate Resource definition in your config.json." +
                             " Using first found (" + parentResource + ").");
                     // Skip adding it in the future.
                     isDuplicate = true;
@@ -345,6 +345,7 @@ public class Bootstrap {
         }
 
         values.put("mods", mods);
+        values.put("debug", this.debug);
 
         if (mainExecutable.getRemoteDescription() != null
                 && mainExecutable.getRemoteDescription().has("mainClass")) {

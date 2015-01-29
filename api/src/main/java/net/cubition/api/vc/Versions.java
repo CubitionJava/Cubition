@@ -22,7 +22,7 @@ public enum Versions {
     /**
      * In Server Development Version 0.0.1
      */
-    SERVER_DEVL_0_0_1("Server 0.0.1D",  1);
+    SERVER_DEVL_0_0_1("Server 0.0.1D",  0x8105CCE);
 
     /**
      * The name of this version

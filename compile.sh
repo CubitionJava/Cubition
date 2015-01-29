@@ -2,6 +2,14 @@
 # A very basic Cubition compile script for Mac + Linux
 # This expects Maven is available in the environment under 'mvn'.
 
+if [ `uname -s` == Darwin ]
+then
+    export JAVA_HOME=`/usr/libexec/java_home`
+fi
+
+# Check for mvn existance
+type mvn >/dev/null 2>&1 || { echo >&2 "I couldn't find Maven in the environment via the command 'mvn'. Aborting..."; exit 1; }
+
 # Clean up environment
 echo Cleaning up...
 mvn clean

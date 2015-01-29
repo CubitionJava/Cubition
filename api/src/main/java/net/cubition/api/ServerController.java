@@ -2,6 +2,7 @@ package net.cubition.api;
 
 import net.cubition.api.vc.Availability;
 import net.cubition.api.vc.Versions;
+import org.apache.log4j.Logger;
 
 /**
  * A ServerController manages the run loop of the server
@@ -48,10 +49,18 @@ public interface ServerController {
     public String getWorkingDirectory();
 
     /**
-     * Gets Current Server version
+     * Gets Current Server Version
      *
      * @return The Current Version of the server
      */
     @Availability(server = Versions.SERVER_DEVL_0_0_1)
     public Versions getVersion();
+
+    /**
+     * Gets the Server's Logger
+     *
+     * @return The Server's Current Logger
+     */
+    @Availability(server = Versions.SERVER_DEVL_0_0_1)
+    public Logger getLogger();
 }
