@@ -1,12 +1,20 @@
 package net.cubition.api;
 
+import net.cubition.api.block.BlockTypeRegister;
+import net.cubition.api.item.ItemRegister;
+import net.cubition.api.tool.ToolTypeRegister;
 import net.cubition.api.vc.Versions;
 
 /**
  * API stores information about the currently running API
  */
 public class API {
-    /**
+	
+	private static BlockTypeRegister blockTypeRegister = new BlockTypeRegister ();
+	private static ItemRegister itemRegister = new ItemRegister ();
+	private static ToolTypeRegister toolTypeRegister = new ToolTypeRegister ();
+	
+	/**
      * Gets the name of the current API Version
      *
      * @return The name of the current API Version
@@ -31,8 +39,43 @@ public class API {
      * @return Whether or not this is supported
      */
     public static boolean supportsServerBuild(Versions version) {
-        if (version == Versions.SERVER_DEVL_0_0_1) return true;
-        else return false;
+    	switch (version)
+    	{
+    	
+    	case CLIENT_DEVL_0_0_1:
+    		return true;
+    	
+    	default:
+    		return false;
+    	
+    	}
+    }
+    
+    /**
+     * Provides the BlockType register
+     * 
+     * @return the register
+     */
+    public static BlockTypeRegister getBlockTypeRegister () {
+    	return blockTypeRegister;
+    }
+    
+    /**
+     * Provides the Item register
+     * 
+     * @return the register
+     */
+    public static ItemRegister getItemRegister () {
+    	return itemRegister;
+    }
+    
+    /**
+     * Provides the ToolType register
+     * 
+     * @return the register
+     */
+    public static ToolTypeRegister getToolTypeRegister () {
+    	return toolTypeRegister;
     }
 
     /**
