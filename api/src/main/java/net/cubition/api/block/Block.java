@@ -66,7 +66,7 @@ public class Block
 	
 	public void setBlockData (BlockState state)
 	{
-		
+		this.state = state;
 	}
 
 }
