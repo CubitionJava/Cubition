@@ -4,7 +4,7 @@ public interface Durable {
 
 	/**
 	 * Gets the amount of durability-points of this item
-	 * @return
+	 * @return the amount of durability
 	 */
 	public int getDurability ();
 	

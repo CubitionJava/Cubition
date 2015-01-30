@@ -7,7 +7,7 @@ public abstract class EntityBase {
     /**
      * The current location of this entity
      *
-     * @getter {@link net.cubition.api.entity.EntityBase.getLocation}
+     * @getter {@link net.cubition.core.entity.EntityBase.getLocation}
      * @setter {@link net.cubition.api.entity.EntityBase.teleport(Location); net.cubition.entity.EntityBase.teleport(EntityBase)}
      */
     private Location currentLocation;

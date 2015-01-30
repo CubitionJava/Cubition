@@ -1,5 +1,6 @@
-package net.cubition.api.entity;
+package net.cubition.core.entity;
 
+import net.cubition.api.entity.EntityBase;
 import net.cubition.api.item.ItemStack;
 import net.cubition.api.world.Location;
 
