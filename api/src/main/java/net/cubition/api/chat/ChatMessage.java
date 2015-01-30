@@ -1,8 +1,7 @@
 package net.cubition.api.chat;
 
-import net.cubition.api.util.Pair;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a chat message build out of chat coponents

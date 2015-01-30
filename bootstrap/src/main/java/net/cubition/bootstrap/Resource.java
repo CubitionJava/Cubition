@@ -21,7 +21,10 @@ import java.util.Collections;
  * {@link com.google.gson.Gson}
  */
 public class Resource implements Serializable {
-    private static final Logger LOG = LoggerFactory.getLogger(Bootstrap.class);
+
+	private static final long serialVersionUID = 1L;
+
+	private static final Logger LOG = LoggerFactory.getLogger(Bootstrap.class);
 
     /**
      * Provides a comment in the JSON file, helping the user with this Resource.
@@ -141,7 +144,7 @@ public class Resource implements Serializable {
     }
 
     /**
-     * Check if this Resource exists locally
+     * Checks if this Resource exists locally
      *
      * @return Whether of not this resource needs to be downloaded
      */

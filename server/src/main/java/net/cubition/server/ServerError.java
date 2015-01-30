@@ -4,7 +4,10 @@ package net.cubition.server;
  * This class represents a generic ServerError
  */
 public class ServerError extends Error {
-    /**
+
+	private static final long serialVersionUID = 1L;
+
+	/**
      * Internal Error
      */
     public ServerError() {

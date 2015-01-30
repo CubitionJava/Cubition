@@ -17,7 +17,10 @@ import java.util.Arrays;
  * {@link com.google.gson.Gson}
  */
 public class LaunchConfig implements Serializable {
-    /**
+
+	private static final long serialVersionUID = 1L;
+
+	/**
      * Provides a comment in the JSON file, helping the user with this LaunchConfig.
      */
     private String _c = "This is the main configuration for the Bootstrap. " +
