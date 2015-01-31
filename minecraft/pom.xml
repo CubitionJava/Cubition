@@ -12,6 +12,14 @@
 
     <artifactId>minecraft</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>net.cubition</groupId>
+            <artifactId>api</artifactId>
+            <version>${version}</version>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>
