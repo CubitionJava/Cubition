@@ -40,14 +40,16 @@ public class MinecraftCoreMod implements Mod {
 		API.getItemRegister().register(ItemWoodenShovel.class.getName(), new ItemWoodenShovel ());
 		
 		// Register all blocks of Minecraft
-		API.getBlockTypeRegister ().register (BlockStone.class.getName(), new BlockStone ());
-		API.getBlockTypeRegister ().register (BlockGrass.class.getName(), new BlockGrass ());
-		API.getBlockTypeRegister ().register (BlockDirt.class.getName(), new BlockDirt ());
+		API.getBlockTypeRegister().register(BlockStone.class.getName(), new BlockStone ());
+		API.getBlockTypeRegister().register(BlockGrass.class.getName(), new BlockGrass ());
+		API.getBlockTypeRegister().register(BlockDirt.class.getName(), new BlockDirt ());
+		API.getBlockTypeRegister().register(BlockCobblestone.class.getName(), new BlockCobblestone());
 		
 		// Register all blocks of Minecraft as Items, so they can be in your inventory.
 		API.getItemRegister().register(BlockStone.class.getName(), new BlockStone ());
 		API.getItemRegister().register(BlockGrass.class.getName(), new BlockGrass ());
 		API.getItemRegister().register(BlockDirt.class.getName(), new BlockDirt());
+		API.getItemRegister().register(BlockCobblestone.class.getName(), new BlockCobblestone());
 		
 	}
 
