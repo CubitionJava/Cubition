@@ -10,7 +10,7 @@ public class BlockDirt extends ItemBase implements BlockType, NetworkIDResource 
 
 	@Override
 	public String getNetworkID() {
-		return "3";
+		return "4"; //Assuming this is Minecraft id
 	}
 
 	@Override
