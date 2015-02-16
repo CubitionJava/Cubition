@@ -15,10 +15,7 @@ public class BlockDirt extends ItemBase implements BlockType, NetworkIDResource 
 
 	@Override
 	public float getDigSpeed(ToolItem item) {
-		if (item.getToolType() instanceof ToolPickaxe)
-			return 0;
-		else
-			return 0;
+		return 0;
 	}
 
 	@Override
