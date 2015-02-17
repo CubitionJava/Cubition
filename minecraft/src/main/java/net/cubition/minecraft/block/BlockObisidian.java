@@ -15,7 +15,10 @@ public class BlockObsidian extends ItemBase implements BlockType, NetworkIDResou
 
 	@Override
 	public float getDigSpeed(ToolItem item) {
-		return 1;
+		if (item.getToolType() instanceof ToolShovel)
+			return 1;
+		else
+			return 0.6;
 	}
 
 	@Override
