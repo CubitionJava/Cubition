@@ -45,6 +45,7 @@ public class MinecraftCoreMod implements Mod {
 		API.getBlockTypeRegister().register(BlockDirt.class.getName(), new BlockDirt ());
 		API.getBlockTypeRegister().register(BlockCobblestone.class.getName(), new BlockCobblestone());
 		API.getBlockTypeRegister().register(BlockSand.class.getName(), new BlockSand ());
+		API.getBlockTypeRegister().register(BlockObsidian.class.getName(), new BlockObsidian ());
 		
 		// Register all blocks of Minecraft as Items, so they can be in your inventory.
 		API.getItemRegister().register(BlockStone.class.getName(), new BlockStone ());
@@ -52,6 +53,7 @@ public class MinecraftCoreMod implements Mod {
 		API.getItemRegister().register(BlockDirt.class.getName(), new BlockDirt());
 		API.getItemRegister().register(BlockCobblestone.class.getName(), new BlockCobblestone());
 		API.getItemRegister().register(BlockSand.class.getName(), new BlockSand ());
+		API.getItemRegister().register(BlockObsidian.class.getName(), new BlockObsidian ());
 		
 	}
 
