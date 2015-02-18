@@ -35,9 +35,13 @@ public class MinecraftCoreMod implements Mod {
 
 		// Register all the ToolTypes of Minecraft
 		API.getToolTypeRegister ().register(ToolShovel.class.getName (), new ToolShovel ());
+		API.getToolTypeRegister ().register(ToolAxe.class.getName (), new ToolAxe ());
+		API.getToolTypeRegister ().register(ToolPickaxe.class.getName (), new ToolPickaxe ());
+		API.getToolTypeRegister ().register(ToolHoe.class.getName (), new ToolHoe ());
 		
 		// Register all the items of Minecraft
 		API.getItemRegister().register(ItemWoodenShovel.class.getName(), new ItemWoodenShovel ());
+		API.getItemRegister().register(ItemStoneShovel.class.getName(), new ItemStoneShovel ());
 		
 		// Register all blocks of Minecraft
 		API.getBlockTypeRegister().register(BlockStone.class.getName(), new BlockStone ());
