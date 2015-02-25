@@ -15,7 +15,11 @@ public class BlockGold extends ItemBase implements BlockType, NetworkIDResource 
 
 	@Override
 	public float getDigSpeed(ToolItem item) {
-		return 2;
+            if(item instanceof ToolPickaxe){
+               return 4;     //Pickaxe breaks a gold block faster than a hand
+            }else{
+	       return 2;
+            }
 	}
 
 	@Override
