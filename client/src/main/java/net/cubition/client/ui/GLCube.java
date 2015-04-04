@@ -55,17 +55,17 @@ public class GLCube implements IGLDrawable3D {
 
 	@Override
 	public void setWidth(double value) {
-
+		width = value;
 	}
 
 	@Override
 	public void setHeight(double value) {
-
+		height = value;
 	}
 
 	@Override
 	public void setDepth(double value) {
-
+		depth = value;
 	}
 
 }
