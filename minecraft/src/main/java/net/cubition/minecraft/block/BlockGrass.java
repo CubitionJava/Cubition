@@ -6,7 +6,8 @@ import net.cubition.api.item.ToolItem;
 import net.cubition.api.network.NetworkIDResource;
 import net.cubition.minecraft.tool.ToolShovel;
 
-public class BlockGrass extends ItemBase implements BlockType, NetworkIDResource {
+public class BlockGrass extends ItemBase implements BlockType,
+		NetworkIDResource {
 
 	@Override
 	public float getDigSpeed(ToolItem item) {

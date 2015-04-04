@@ -6,7 +6,8 @@ import net.cubition.api.item.ToolItem;
 import net.cubition.api.network.NetworkIDResource;
 import net.cubition.minecraft.tool.ToolPickaxe;
 
-public class BlockObsidian extends ItemBase implements BlockType, NetworkIDResource {
+public class BlockObsidian extends ItemBase implements BlockType,
+		NetworkIDResource {
 
 	@Override
 	public String getNetworkID() {

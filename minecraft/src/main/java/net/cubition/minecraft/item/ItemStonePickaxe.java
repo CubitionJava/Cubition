@@ -5,24 +5,24 @@ import net.cubition.api.TranslatableResource;
 import net.cubition.api.item.ToolItem;
 import net.cubition.api.network.NetworkIDResource;
 import net.cubition.api.tool.ToolType;
-import net.cubition.minecraft.tool.ToolShovel;
+import net.cubition.minecraft.tool.ToolPickaxe;
 
-public class ItemStoneShovel extends ToolItem implements NetworkIDResource,
+public class ItemStonePickaxe extends ToolItem implements NetworkIDResource,
 		TranslatableResource {
 
 	@Override
 	public String getNetworkID() {
-		return "273";
+		return "274";
 	}
 
 	@Override
 	public String getTranslatableName() {
-		return "item.shovelStone";
+		return "item.pickaxeStone";
 	}
 
 	@Override
 	public String getTranslatableName(byte damage) {
-		return "item.shovelStone";
+		return "item.pickaxeStone";
 	}
 
 	@Override
@@ -32,7 +32,7 @@ public class ItemStoneShovel extends ToolItem implements NetworkIDResource,
 
 	@Override
 	public ToolType getToolType() {
-		return API.getToolTypeRegister().get(ToolShovel.class.getName());
+		return API.getToolTypeRegister().get(ToolPickaxe.class.getName());
 	}
 
 }

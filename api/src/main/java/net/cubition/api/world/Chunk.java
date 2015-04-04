@@ -5,19 +5,19 @@ import net.cubition.api.block.BlockType;
 
 public interface Chunk {
 
-    Block getBlockAt(double relativeX, double relativeY, double relativeZ);
+	Block getBlockAt(double relativeX, double relativeY, double relativeZ);
 
-    void setBlockType(int relativeX, int relativeY, int relativeZ,
-                      BlockType type);
+	void setBlockType(int relativeX, int relativeY, int relativeZ,
+			BlockType type);
 
-    BlockType getBlockType(int x, int y, int z);
+	BlockType getBlockType(int x, int y, int z);
 
-    World getWorld();
+	World getWorld();
 
-    int getStartX();
+	int getStartX();
 
-    int getStartY();
+	int getStartY();
 
-    int getStartZ();
+	int getStartZ();
 
 }

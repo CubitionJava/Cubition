@@ -7,7 +7,8 @@ import net.cubition.api.item.ToolItem;
 import net.cubition.api.network.NetworkIDResource;
 import net.cubition.minecraft.tool.ToolPickaxe;
 
-public class BlockWood extends ItemBase implements BlockType, TranslatableResource, NetworkIDResource {
+public class BlockWood extends ItemBase implements BlockType,
+		TranslatableResource, NetworkIDResource {
 
 	@Override
 	public String getNetworkID() {
@@ -26,11 +27,10 @@ public class BlockWood extends ItemBase implements BlockType, TranslatableResour
 	public String getTranslatableName() {
 		return "tile.wood.default.name";
 	}
-	
-	@Override 
-	public String getTranslatableName (byte damage)	{
-		switch (damage)
-		{
+
+	@Override
+	public String getTranslatableName(byte damage) {
+		switch (damage) {
 		case 1:
 			return "tile.wood.spruce.name";
 		case 2:
@@ -42,7 +42,7 @@ public class BlockWood extends ItemBase implements BlockType, TranslatableResour
 		case 5:
 			return "tile.wood.darkOak.name";
 		default:
-			return getTranslatableName ();
+			return getTranslatableName();
 		}
 	}
 

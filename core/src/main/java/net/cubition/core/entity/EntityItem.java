@@ -15,15 +15,17 @@ public class EntityItem extends EntityBase {
 	 * Whether entities are able to pickup this item
 	 */
 	private boolean uppickable = true;
-	
+
 	/**
 	 * Spawns a new EntityItem on with the given ItemStack on the given location
 	 * 
-	 * @param stack The ItemStack this EntityItem holds
-	 * @param location The location this EntityItem will spawn
+	 * @param stack
+	 *            The ItemStack this EntityItem holds
+	 * @param location
+	 *            The location this EntityItem will spawn
 	 */
 	public EntityItem(ItemStack stack, Location location) {
-		super (location);
+		super(location);
 		this.stack = stack;
 	}
 
@@ -32,11 +34,11 @@ public class EntityItem extends EntityBase {
 	 * 
 	 * @return the ItemStack
 	 */
-	public ItemStack getItemStack () {
+	public ItemStack getItemStack() {
 		return stack;
 	}
-	
-	public boolean isUpPickable () {
+
+	public boolean isUpPickable() {
 		return this.uppickable;
 	}
 

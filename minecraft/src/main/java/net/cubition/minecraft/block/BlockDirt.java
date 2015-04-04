@@ -25,17 +25,16 @@ public class BlockDirt extends ItemBase implements BlockType, NetworkIDResource 
 	public String getTranslatableName() {
 		return "tile.dirt.default.name";
 	}
-	
+
 	@Override
-	public String getTranslatableName (byte damage) {
-		switch (damage)
-		{
+	public String getTranslatableName(byte damage) {
+		switch (damage) {
 		case 1:
 			return "tile.dirt.coarse.name";
 		case 2:
 			return "tile.dirt.podzol.name";
 		default:
-			return getTranslatableName ();
+			return getTranslatableName();
 		}
 	}
 

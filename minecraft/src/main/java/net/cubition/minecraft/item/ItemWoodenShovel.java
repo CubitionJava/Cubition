@@ -7,7 +7,8 @@ import net.cubition.api.network.NetworkIDResource;
 import net.cubition.api.tool.ToolType;
 import net.cubition.minecraft.tool.ToolShovel;
 
-public class ItemWoodenShovel extends ToolItem implements NetworkIDResource, TranslatableResource {
+public class ItemWoodenShovel extends ToolItem implements NetworkIDResource,
+		TranslatableResource {
 
 	@Override
 	public String getNetworkID() {
@@ -31,7 +32,7 @@ public class ItemWoodenShovel extends ToolItem implements NetworkIDResource, Tra
 
 	@Override
 	public ToolType getToolType() {
-		return API.getToolTypeRegister().get(ToolShovel.class.getName ());
+		return API.getToolTypeRegister().get(ToolShovel.class.getName());
 	}
 
 }
