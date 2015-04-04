@@ -19,7 +19,7 @@ public class BlockObsidian extends ItemBase implements BlockType,
 		if (item.getToolType() instanceof ToolPickaxe)
 			return 1;
 		else
-			return 0.6;
+			return 0.6f;
 	}
 
 	@Override

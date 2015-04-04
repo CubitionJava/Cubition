@@ -5,7 +5,7 @@ import net.cubition.api.block.BlockType;
 import net.cubition.api.item.ItemBase;
 import net.cubition.api.item.ToolItem;
 import net.cubition.api.network.NetworkIDResource;
-import net.cubition.minecraft.tool.ToolPickaxe;
+import net.cubition.minecraft.tool.ToolAxe;
 
 public class BlockWood extends ItemBase implements BlockType,
 		TranslatableResource, NetworkIDResource {

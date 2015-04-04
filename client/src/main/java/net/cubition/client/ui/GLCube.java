@@ -3,81 +3,69 @@ package net.cubition.client.ui;
 public class GLCube implements IGLDrawable3D {
 
 	public double x, y, z, width, height, depth;
-	
-	public void draw () {
+
+	public void draw() {
 		// TODO: Add code for draing using GL11......
 	}
 
 	@Override
 	public double getX() {
-		// TODO Auto-generated method stub
-		return 0;
+		return x;
 	}
 
 	@Override
 	public double getY() {
-		// TODO Auto-generated method stub
-		return 0;
+		return y;
 	}
 
 	@Override
 	public double getZ() {
-		// TODO Auto-generated method stub
-		return 0;
+		return z;
 	}
 
 	@Override
 	public double getWidth() {
-		// TODO Auto-generated method stub
-		return 0;
+		return width;
 	}
 
 	@Override
 	public double getHeight() {
-		// TODO Auto-generated method stub
-		return 0;
+		return height;
 	}
 
 	@Override
 	public double getDepth() {
-		// TODO Auto-generated method stub
-		return 0;
+		return depth;
 	}
 
 	@Override
 	public void setX(double value) {
-		// TODO Auto-generated method stub
-		
+		x = value;
 	}
 
 	@Override
 	public void setY(double value) {
-		// TODO Auto-generated method stub
-		
+		y = value;
 	}
 
 	@Override
 	public void setZ(double value) {
-		// TODO Auto-generated method stub
-		
+		z = value;
 	}
 
 	@Override
 	public void setWidth(double value) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void setHeight(double value) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void setDepth(double value) {
-		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 }
