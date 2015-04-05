@@ -1,7 +1,11 @@
 package net.cubition.client.gl;
 
+import java.nio.ByteBuffer;
+
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWKeyCallback;
+import org.lwjgl.glfw.GLFWvidmode;
+import org.lwjgl.opengl.GLContext;
 
 /**
  * Object Oriented Window Wrapper
@@ -31,7 +35,7 @@ public class GLWindow {
 	
 	public static GLWindow createWindow(int width, int height, String title, boolean visible, boolean resizable)
 	{
-		return createWindow (width, height, title, GLFW.glfwGetPrimaryMonitor(), 0, visible, resizable);
+		return createWindow (width, height, title, GLFW.glfwGetPrimaryMonitor (), 0, visible, resizable);
 	}
 	
 	public static GLWindow createWindow(int width, int height, String title)
@@ -39,7 +43,7 @@ public class GLWindow {
 		return createWindow (width, height, title, true, false);
 	}
 	
-	public void SwapBuffers ()
+	public void swapBuffers ()
 	{
 		GLFW.glfwSwapBuffers(windowID);
 	}
@@ -53,6 +57,15 @@ public class GLWindow {
 		GLFW.glfwSetWindowShouldClose (windowID, d);
 	}
 
+	public void sizeCenter (int width, int height) {
+		ByteBuffer vidmode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
+        GLFW.glfwSetWindowPos(
+            windowID,
+            (GLFWvidmode.width(vidmode) - width) / 2,
+            (GLFWvidmode.height(vidmode) - height) / 2
+        );
+	}
+	
 	public void destroy ()
 	{
 		GLFW.glfwDestroyWindow(windowID);
@@ -90,5 +103,27 @@ public class GLWindow {
 	public void iconify () {
 		GLFW.glfwIconifyWindow(windowID);
 	}
+	public GLContext createContext () {
+		GLFW.glfwMakeContextCurrent (windowID);
+		return GLContext.createFromCurrent();
+	}
+	public void show () {
+		GLFW.glfwShowWindow(windowID);
+	}
+	public void mouseVisible (CursorMode mode) {
+		GLFW.glfwSetInputMode (windowID, GLFW.GLFW_CURSOR, mode.getGlfwMode());
+	}
 	
+	public enum CursorMode {
+		NORMAL (1),
+		HIDDEN (2),
+		DISABLED (212995);
+		private int glfwMode;
+		private CursorMode (int glfwMode) {
+			this.glfwMode = glfwMode;
+		}
+		public int getGlfwMode () {
+			return glfwMode;
+		}
+	}
 }
