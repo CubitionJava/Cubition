@@ -80,6 +80,7 @@
                 <configuration>
                     <destDir>../../../../out/javadoc-${project.name}</destDir>
                     <quiet>true</quiet>
+                    <additionalparam>-Xdoclint:none</additionalparam>
                 </configuration>
             </plugin>
         </plugins>
