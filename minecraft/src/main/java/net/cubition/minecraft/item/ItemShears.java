@@ -7,7 +7,7 @@ import net.cubition.api.network.NetworkIDResource;
 import net.cubition.api.tool.ToolType;
 import net.cubition.minecraft.tool.ToolShears;
 
-public class ItemStonePickaxe extends ToolItem implements NetworkIDResource,
+public class ItemShears extends ToolItem implements NetworkIDResource,
 		TranslatableResource {
 
 	@Override
