@@ -1,0 +1,24 @@
+# Java Structure Design file containing the structure of the new API
+# This code will fed to a preprocessir which generates a java base
+I MessageReceiver
+  F sendMessage (String msg): void
+  F sendMessage (FormattedMessage msg): void
+I Entity
+  P location: Location
+  F getLocation (): void
+  F teleport (Entity e): void
+  F teleport (Location loc): void
+I Creature : Entity
+  P name: String
+  F getName ()
+  F getMaxHealth (): int
+  F getHealth (): int
+  F setHealth (int health): void
+I Player : MessageReceiver, Creature
+  F getFoodLevel (): int
+  F: setFoodLevel(int level): void
+C Location
+  P x, y, z: double
+  P pitch, yaw: float
+  P world: World
+  F @(world: World, x: double, y: double, z: double)
