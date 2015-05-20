@@ -42,5 +42,5 @@ public interface Mod {
 	 * Initializes the Mod's state
 	 */
 	@Availability(server = Versions.SERVER_DEVL_0_0_1, client = Versions.CLIENT_DEVL_0_0_1)
-	public void initialiaze();
+	public void initialize();
 }
