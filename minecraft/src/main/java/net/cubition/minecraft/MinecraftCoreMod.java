@@ -1,25 +1,17 @@
 package net.cubition.minecraft;
 
-import java.io.File;
-
 import net.cubition.api.API;
 import net.cubition.api.mod.Mod;
 import net.cubition.api.mod.ModResourceFile;
 import net.cubition.api.mod.ModResourceFile.Dependency;
-import net.cubition.minecraft.block.BlockCobblestone;
-import net.cubition.minecraft.block.BlockDirt;
-import net.cubition.minecraft.block.BlockGold;
-import net.cubition.minecraft.block.BlockGrass;
-import net.cubition.minecraft.block.BlockObsidian;
-import net.cubition.minecraft.block.BlockSand;
-import net.cubition.minecraft.block.BlockStone;
-import net.cubition.minecraft.item.ItemStonePickaxe;
-import net.cubition.minecraft.item.ItemStoneShovel;
-import net.cubition.minecraft.item.ItemWoodenShovel;
+import net.cubition.minecraft.block.*;
+import net.cubition.minecraft.item.*;
 import net.cubition.minecraft.tool.ToolAxe;
 import net.cubition.minecraft.tool.ToolHoe;
 import net.cubition.minecraft.tool.ToolPickaxe;
 import net.cubition.minecraft.tool.ToolShovel;
+
+import java.io.File;
 
 public class MinecraftCoreMod implements Mod {
 
@@ -44,7 +36,7 @@ public class MinecraftCoreMod implements Mod {
 	}
 
 	@Override
-	public void initialiaze() {
+	public void initialize() {
 
 		// Register all the ToolTypes of Minecraft
 		API.getToolTypeRegister().register(ToolShovel.class.getName(),
@@ -59,10 +51,30 @@ public class MinecraftCoreMod implements Mod {
 		// Register all the items of Minecraft
 		API.getItemRegister().register(ItemWoodenShovel.class.getName(),
 				new ItemWoodenShovel());
+		API.getItemRegister().register(ItemWoodenPickaxe.class.getName(),
+				new ItemWoodenPickaxe());
+		API.getItemRegister().register(ItemWoodenHoe.class.getName(),
+				new ItemWoodenHoe());
+		API.getItemRegister().register(ItemWoodenAxe.class.getName(),
+				new ItemWoodenAxe());
 		API.getItemRegister().register(ItemStoneShovel.class.getName(),
 				new ItemStoneShovel());
 		API.getItemRegister().register(ItemStonePickaxe.class.getName(),
 				new ItemStonePickaxe());
+		API.getItemRegister().register(ItemStoneHoe.class.getName(),
+				new ItemStoneHoe());
+		API.getItemRegister().register(ItemStoneAxe.class.getName(),
+				new ItemStoneAxe());
+		API.getItemRegister().register(ItemShears.class.getName(),
+				new ItemShears());
+		API.getItemRegister().register(ItemIronShovel.class.getName(),
+				new ItemIronShovel());
+		API.getItemRegister().register(ItemIronPickaxe.class.getName(),
+				new ItemIronPickaxe());
+		API.getItemRegister().register(ItemIronHoe.class.getName(),
+				new ItemIronHoe());
+		API.getItemRegister().register(ItemIronAxe.class.getName(),
+				new ItemIronAxe());
 
 		// Register all blocks of Minecraft
 		API.getBlockTypeRegister().register(BlockStone.class.getName(),
@@ -79,6 +91,8 @@ public class MinecraftCoreMod implements Mod {
 				new BlockObsidian());
 		API.getBlockTypeRegister().register(BlockGold.class.getName(),
 				new BlockGold());
+		API.getBlockTypeRegister().register(BlockTNT.class.getName(),
+				new BlockTNT());
 
 		// Register all blocks of Minecraft as Items, so they can be in your
 		// inventory.
@@ -96,7 +110,7 @@ public class MinecraftCoreMod implements Mod {
 				new BlockObsidian());
 		API.getItemRegister().register(BlockGold.class.getName(),
 				new BlockGold());
-
+		API.getItemRegister().register(BlockTNT.class.getName(),
+				new BlockTNT());
 	}
-
 }

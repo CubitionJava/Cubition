@@ -5,9 +5,9 @@ import net.cubition.api.TranslatableResource;
 import net.cubition.api.item.ToolItem;
 import net.cubition.api.network.NetworkIDResource;
 import net.cubition.api.tool.ToolType;
-import net.cubition.minecraft.tool.ToolShovel;
+import net.cubition.minecraft.tool.ToolHoe;
 
-public class ItemWooden Hoe extends ToolItem implements NetworkIDResource,
+public class ItemWoodenHoe extends ToolItem implements NetworkIDResource,
 		TranslatableResource {
 
 	@Override

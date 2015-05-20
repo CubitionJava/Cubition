@@ -7,7 +7,7 @@ import net.cubition.api.network.NetworkIDResource;
 import net.cubition.api.tool.ToolType;
 import net.cubition.minecraft.tool.ToolHoe;
 
-public class ItemStoneShovel extends ToolItem implements NetworkIDResource,
+public class ItemStoneHoe extends ToolItem implements NetworkIDResource,
 		TranslatableResource {
 
 	@Override

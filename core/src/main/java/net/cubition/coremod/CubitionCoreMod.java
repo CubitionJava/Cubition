@@ -1,9 +1,9 @@
 package net.cubition.coremod;
 
-import java.io.File;
-
 import net.cubition.api.mod.Mod;
 import net.cubition.api.mod.ModResourceFile;
+
+import java.io.File;
 
 public class CubitionCoreMod implements Mod {
 
@@ -26,7 +26,7 @@ public class CubitionCoreMod implements Mod {
 	}
 
 	@Override
-	public void initialiaze() {
+	public void initialize() {
 		// TODO Auto-generated method stub
 	}
 
