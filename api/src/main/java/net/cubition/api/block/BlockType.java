@@ -22,7 +22,7 @@ public interface BlockType {
 	 * 0 = unbreakable<br />
 	 * 10 = instant breaking<br />
 	 *
-	 * @param tool
+	 * @param item
 	 *            the tool
 	 * @return the dig speed
 	 */

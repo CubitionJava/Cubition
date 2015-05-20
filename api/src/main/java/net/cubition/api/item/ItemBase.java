@@ -25,7 +25,7 @@ public abstract class ItemBase {
 	 * @param damage
 	 *            The damage-value
 	 * @return The translatable name for this damage value if one exists, else
-	 *         the default transatableName
+	 *         the default translatableName
 	 */
 	public String getTranslatableName(byte damage) {
 		return this.getTranslatableName();

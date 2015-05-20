@@ -32,7 +32,7 @@ public class ChatMessage {
 			comma = true;
 		}
 
-		return output += "]}";
+		return output + "]}";
 	}
 
 }
