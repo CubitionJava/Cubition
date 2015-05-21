@@ -1,17 +1,16 @@
 package net.cubition.client.ui.scene;
 
-import java.util.HashMap;
-
 import net.cubition.client.ui.IGLDrawable;
 import net.cubition.client.ui.ScreenObject;
+
+import java.util.HashMap;
 
 public class Scene implements IGLDrawable {
 
 	protected HashMap<String, ScreenObject> sceneComponents = new HashMap<String, ScreenObject>();
 
 	public void draw() {
-		for (ScreenObject drawable : sceneComponents.values())
-			drawable.draw();
+		sceneComponents.values().forEach(net.cubition.client.ui.ScreenObject::draw);
 	}
 
 	public ScreenObject getObject(String name) {

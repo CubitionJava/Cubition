@@ -1,19 +1,14 @@
 package net.cubition.client.ui;
 
-import static org.lwjgl.opengl.GL11.GL_RGBA;
-import static org.lwjgl.opengl.GL11.GL_RGBA8;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
-import static org.lwjgl.opengl.GL11.glTexImage2D;
+import org.lwjgl.BufferUtils;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-import javax.imageio.ImageIO;
-
-import org.lwjgl.BufferUtils;
+import static org.lwjgl.opengl.GL11.*;
 
 public class ImageObject extends ScreenObject {
 
@@ -23,7 +18,7 @@ public class ImageObject extends ScreenObject {
 	public ImageObject (File imageFile) {
 		try {
 			image = ImageIO.read(imageFile);
-		} catch (IOException e) {}
+		} catch (IOException ignored) {}
 	}
 	
 	public ImageObject (File imageFile, boolean rgba) {

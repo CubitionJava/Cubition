@@ -7,8 +7,7 @@ public class ScreenObject implements IGLDrawable {
 	private ArrayList<IGLDrawable> elements = new ArrayList<IGLDrawable>();
 
 	public void draw() {
-		for (IGLDrawable drawable : elements)
-			drawable.draw();
+		elements.forEach(net.cubition.client.ui.IGLDrawable::draw);
 	}
 
 }
