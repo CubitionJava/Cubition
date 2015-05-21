@@ -55,4 +55,7 @@ public class Location {
 		return world.getChunkAt(this);
 	}
 
+	public World getWorld() {
+		return world;
+	}
 }

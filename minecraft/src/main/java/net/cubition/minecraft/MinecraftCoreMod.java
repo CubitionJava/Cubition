@@ -10,6 +10,9 @@ import net.cubition.minecraft.tool.ToolAxe;
 import net.cubition.minecraft.tool.ToolHoe;
 import net.cubition.minecraft.tool.ToolPickaxe;
 import net.cubition.minecraft.tool.ToolShovel;
+import net.cubition.minecraft.weapon.WeaponArrow;
+import net.cubition.minecraft.weapon.WeaponBow;
+import net.cubition.minecraft.weapon.WeaponSword;
 
 import java.io.File;
 
@@ -48,7 +51,17 @@ public class MinecraftCoreMod implements Mod {
 		API.getToolTypeRegister().register(ToolHoe.class.getName(),
 				new ToolHoe());
 
+		// Register all the WeaponTypes of Minecraft
+		API.getWeaponTypeRegister().register(WeaponSword.class.getName(),
+				new WeaponSword());
+		API.getWeaponTypeRegister().register(WeaponBow.class.getName(),
+				new WeaponBow());
+		API.getWeaponTypeRegister().register(WeaponArrow.class.getName(),
+				new WeaponArrow());
+
 		// Register all the items of Minecraft
+		API.getItemRegister().register(ItemWoodenSword.class.getName(),
+				new ItemWoodenSword());
 		API.getItemRegister().register(ItemWoodenShovel.class.getName(),
 				new ItemWoodenShovel());
 		API.getItemRegister().register(ItemWoodenPickaxe.class.getName(),
@@ -57,6 +70,8 @@ public class MinecraftCoreMod implements Mod {
 				new ItemWoodenHoe());
 		API.getItemRegister().register(ItemWoodenAxe.class.getName(),
 				new ItemWoodenAxe());
+		API.getItemRegister().register(ItemStoneSword.class.getName(),
+				new ItemStoneSword());
 		API.getItemRegister().register(ItemStoneShovel.class.getName(),
 				new ItemStoneShovel());
 		API.getItemRegister().register(ItemStonePickaxe.class.getName(),
@@ -67,6 +82,8 @@ public class MinecraftCoreMod implements Mod {
 				new ItemStoneAxe());
 		API.getItemRegister().register(ItemShears.class.getName(),
 				new ItemShears());
+		API.getItemRegister().register(ItemIronSword.class.getName(),
+				new ItemIronSword());
 		API.getItemRegister().register(ItemIronShovel.class.getName(),
 				new ItemIronShovel());
 		API.getItemRegister().register(ItemIronPickaxe.class.getName(),
@@ -75,6 +92,30 @@ public class MinecraftCoreMod implements Mod {
 				new ItemIronHoe());
 		API.getItemRegister().register(ItemIronAxe.class.getName(),
 				new ItemIronAxe());
+		API.getItemRegister().register(ItemGoldSword.class.getName(),
+				new ItemGoldSword());
+		API.getItemRegister().register(ItemGoldShovel.class.getName(),
+				new ItemGoldShovel());
+		API.getItemRegister().register(ItemGoldPickaxe.class.getName(),
+				new ItemGoldPickaxe());
+		API.getItemRegister().register(ItemGoldHoe.class.getName(),
+				new ItemGoldHoe());
+		API.getItemRegister().register(ItemGoldAxe.class.getName(),
+				new ItemGoldAxe());
+		API.getItemRegister().register(ItemDiamondSword.class.getName(),
+				new ItemDiamondSword());
+		API.getItemRegister().register(ItemDiamondShovel.class.getName(),
+				new ItemDiamondShovel());
+		API.getItemRegister().register(ItemDiamondPickaxe.class.getName(),
+				new ItemDiamondPickaxe());
+		API.getItemRegister().register(ItemDiamondHoe.class.getName(),
+				new ItemDiamondHoe());
+		API.getItemRegister().register(ItemDiamondAxe.class.getName(),
+				new ItemDiamondAxe());
+		API.getItemRegister().register(ItemBow.class.getName(),
+				new ItemBow());
+		API.getItemRegister().register(ItemArrow.class.getName(),
+				new ItemArrow());
 
 		// Register all blocks of Minecraft
 		API.getBlockTypeRegister().register(BlockStone.class.getName(),
