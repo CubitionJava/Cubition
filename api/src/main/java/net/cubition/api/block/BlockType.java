@@ -26,6 +26,6 @@ public interface BlockType {
 	 *            the tool
 	 * @return the dig speed
 	 */
-	public float getDigSpeed(ToolItem item);
+	float getDigSpeed(ToolItem item);
 
 }

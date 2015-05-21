@@ -2,9 +2,9 @@ package net.cubition.api.world;
 
 public interface World {
 
-	public String getName();
+	String getName();
 
-	public Chunk getChunk(double x, double y, double z);
+	Chunk getChunk(double x, double y, double z);
 
-	public Chunk getChunkAt(Location loc);
+	Chunk getChunkAt(Location loc);
 }
