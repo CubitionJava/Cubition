@@ -88,9 +88,9 @@ C 3DRegion : Region
 C 2DRegion : Region
   F @(Location pos1, Location pos2)
 C ItemStack
-  @(Material material)
-  @(Material material, int amount)
-  @(Material material, int amount, ItemMeta itemMeta)
+  F @(Material material)
+  F @(Material material, int amount)
+  F @(Material material, int amount, ItemMeta itemMeta)
   P item: Material
   P amount: int
   P damage: byte
@@ -116,7 +116,8 @@ C Block
 I Chunk
   F getBlocks (): Block[]
   F getWorld (): World
-I Material
+
+C Material
   P mod: Mod
   P translatableName: String
   P itemTextureName: String
