@@ -118,40 +118,48 @@ public class MinecraftCoreMod implements Mod {
 				new ItemArrow());
 
 		// Register all blocks of Minecraft
-		API.getBlockTypeRegister().register(BlockStone.class.getName(),
-				new BlockStone());
-		API.getBlockTypeRegister().register(BlockGrass.class.getName(),
-				new BlockGrass());
-		API.getBlockTypeRegister().register(BlockDirt.class.getName(),
-				new BlockDirt());
+		API.getBlockTypeRegister().register(BlockBedrock.class.getName(),
+				new BlockBedrock());
 		API.getBlockTypeRegister().register(BlockCobblestone.class.getName(),
 				new BlockCobblestone());
-		API.getBlockTypeRegister().register(BlockSand.class.getName(),
-				new BlockSand());
-		API.getBlockTypeRegister().register(BlockObsidian.class.getName(),
-				new BlockObsidian());
+		API.getBlockTypeRegister().register(BlockDirt.class.getName(),
+				new BlockDirt());
 		API.getBlockTypeRegister().register(BlockGold.class.getName(),
 				new BlockGold());
+		API.getBlockTypeRegister().register(BlockGrass.class.getName(),
+				new BlockGrass());
+		API.getBlockTypeRegister().register(BlockObsidian.class.getName(),
+				new BlockObsidian());
+		API.getBlockTypeRegister().register(BlockSand.class.getName(),
+				new BlockSand());
+		API.getBlockTypeRegister().register(BlockStone.class.getName(),
+				new BlockStone());
 		API.getBlockTypeRegister().register(BlockTNT.class.getName(),
 				new BlockTNT());
+		API.getBlockTypeRegister().register(BlockWood.class.getName(),
+				new BlockWood());
 
 		// Register all blocks of Minecraft as Items, so they can be in your
 		// inventory.
-		API.getItemRegister().register(BlockStone.class.getName(),
-				new BlockStone());
-		API.getItemRegister().register(BlockGrass.class.getName(),
-				new BlockGrass());
-		API.getItemRegister().register(BlockDirt.class.getName(),
-				new BlockDirt());
+		API.getItemRegister().register(BlockBedrock.class.getName(),
+				new BlockBedrock());
 		API.getItemRegister().register(BlockCobblestone.class.getName(),
 				new BlockCobblestone());
-		API.getItemRegister().register(BlockSand.class.getName(),
-				new BlockSand());
-		API.getItemRegister().register(BlockObsidian.class.getName(),
-				new BlockObsidian());
+		API.getItemRegister().register(BlockDirt.class.getName(),
+				new BlockDirt());
 		API.getItemRegister().register(BlockGold.class.getName(),
 				new BlockGold());
+		API.getItemRegister().register(BlockGrass.class.getName(),
+				new BlockGrass());
+		API.getItemRegister().register(BlockObsidian.class.getName(),
+				new BlockObsidian());
+		API.getItemRegister().register(BlockSand.class.getName(),
+				new BlockSand());
+		API.getItemRegister().register(BlockStone.class.getName(),
+				new BlockStone());
 		API.getItemRegister().register(BlockTNT.class.getName(),
 				new BlockTNT());
+		API.getItemRegister().register(BlockWood.class.getName(),
+				new BlockWood());
 	}
 }
