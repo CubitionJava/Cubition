@@ -68,9 +68,14 @@ C Location
   F add(float yaw, float pitch)
   F getWorld (): World
 E Direction
-  NORTH(0), EAST(1), SOUTH(2), WEST(3)
-  
-  F @(
+
+  NORTH(0)
+  EAST(1)
+  SOUTH(2)
+  WEST(3)
+
+  P num: int
+  F @(int num)
 I Region
   F center (): Location
   F isInside (Location test): boolean
@@ -78,23 +83,28 @@ I Region
 C 3DRegion : Region
   P pos1, pos2: Location
   F @(Location pos1, Location pos2)
-C 2DRegion : Region
-  F @(Location pos1, Location pos2)
 C ItemStack
+  @(Material material)
+  @(Material material, int amount)
+  @(Material material, int amount, ItemMeta itemMeta)
   P item: Material
   P amount: int
   P damage: byte
-  P data: {String, Object}
+  P data: ItemMeta
+  F getItemMeta(): ItemMeta
+C ItemMeta
+  P displayName: String
+  ##TODO: More attributes
 I World
   F getBlockAt (Location loc): Block
   F getChunkAt(Location loc): Chunk
   F getEntities(): Entity[]
-C Block
-  F @(Location loc)
-  P type: Material
-  P location: Location
-  F getLocation (): Location
+I Block
+  F getLocation(): Location
   F getChunk(): Chunk
+  F getType(): Material
+  F setType(): void
+
 I Chunk
   F getBlocks (): Block[]
   F getWorld (): World
@@ -123,4 +133,4 @@ C CubitionServer
 I WorldLoader
   F loadWorld(File directory): World
   F worlds(): String[]
-  
+
