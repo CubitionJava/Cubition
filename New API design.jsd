@@ -1,44 +1,45 @@
 # Java Structure Design file containing the structure of the new API
 # This code will fed to a preprocessir which generates a java base
+# Syntax checker: http://me.xesau.eu/jsd_syntax_checker.php
 
 # Global API
 /net/cubition/api
 E ChatColor
-  BLACK(0x0000)
-  GREY_75(0x00001)
-  GREY_50(0x00010)
-  GREY_25(0x00011)
-  WHITE(0x00100)
-  DARK_RED(0x00101)
-  RED(0x00110)
-  PINK(0x00111)
-  BROWN(0x01000)
-  GOLD(0x01001)
-  ORANGE(0x01010)
-  YELLOW(0x01011)
-  LIGHT_YELLOW(0x01100)
-  DARK_GREEN(0x01101)
-  GREEN(0x01111)
-  LIGHT_GREEN(0x10000)
-  DARK_BLUE(0x10001)
-  BLUE(0x10010)
-  LIGHT_BLUE(0x10011)
-  DARK_TURQOUISE(0x10100)
-  TURQOUISE(0x10101)
-  LIGHT_TURQOUISE(0x10101)
-  DARK_PURPLE(0x10110)
-  PURPLE(0x10111)
-  LIGHT_PURPLE(0x11000)
+  BLACK (0x0000)
+  GREY_75 (0x00001)
+  GREY_50 (0x00010)
+  GREY_25 (0x00011)
+  WHITE (0x00100)
+  DARK_RED (0x00101)
+  RED (0x00110)
+  PINK (0x00111)
+  BROWN (0x01000)
+  GOLD (0x01001)
+  ORANGE (0x01010)
+  YELLOW (0x01011)
+  LIGHT_YELLOW (0x01100)
+  DARK_GREEN (0x01101)
+  GREEN (0x01111)
+  LIGHT_GREEN (0x10000)
+  DARK_BLUE (0x10001)
+  BLUE (0x10010)
+  LIGHT_BLUE (0x10011)
+  DARK_TURQOUISE (0x10100)
+  TURQOUISE (0x10101)
+  LIGHT_TURQOUISE (0x10101)
+  DARK_PURPLE (0x10110)
+  PURPLE (0x10111)
+  LIGHT_PURPLE (0x11000)
   
   P dat: byte
-  F @(byte dat)
+  F @ (byte dat)
 C FormattedMessagePart
   P color : ChatColor
   P underlined, strikethrough, bold, italic: boolean
 C FormattedMessage
   P parts : FormattedMessagePart[]
-  F @(String message, boolean json)
-  F @(String message)
+  F @ (String message, boolean json)
+  F @ (String message)
 I MessageReceiver
   F sendMessage (String msg): void
   F sendMessage (FormattedMessage msg): void
@@ -56,26 +57,26 @@ I Creature : Entity
   F setHealth (int health): void
 I Player : CommandSender, Creature
   F getFoodLevel (): int
-  F setFoodLevel(int level): void
+  F setFoodLevel (int level): void
 C Location
   P x, y, z: double
   P yaw, pitch: float
   P world: World
-  F @(World w, double x, double y, double z)
-  F @(World w, doule x, double y, double z, float yaw, float pitch)
-  F add(double x, double y, double z)
-  F add(double x, double y, double z, float yaw, float pitch)
-  F add(float yaw, float pitch)
+  F @ (World w, double x, double y, double z)
+  F @ (World w, doule x, double y, double z, float yaw, float pitch)
+  F add (double x, double y, double z)
+  F add (double x, double y, double z, float yaw, float pitch)
+  F add (float yaw, float pitch)
   F getWorld (): World
 E Direction
 
-  NORTH(0)
-  EAST(1)
-  SOUTH(2)
-  WEST(3)
+  NORTH (0)
+  EAST (1)
+  SOUTH (2)
+  WEST (3)
 
   P num: int
-  F @(int num)
+  F @ (int num)
 I Region
   F center (): Location
   F isInside (Location test): boolean
@@ -83,35 +84,35 @@ I Region
   
 C 3DRegion : Region
   P pos1, pos2: Location
-  F @(Location pos1, Location pos2)
+  F @ (Location pos1, Location pos2)
 
 C 2DRegion : Region
-  F @(Location pos1, Location pos2)
+  F @ (Location pos1, Location pos2)
 C ItemStack
-  F @(Material material)
-  F @(Material material, int amount)
-  F @(Material material, int amount, ItemMeta itemMeta)
+  F @ (Material material)
+  F @ (Material material, int amount)
+  F @ (Material material, int amount, ItemMeta itemMeta)
   P item: Material
   P amount: int
   P damage: byte
   P data: ItemMeta
-  F getItemMeta(): ItemMeta
+  F getItemMeta (): ItemMeta
 C ItemMeta
   P displayName: String
   ##TODO: More attributes
 I World
   F getBlockAt (Location loc): Block
-  F getChunkAt(Location loc): Chunk
-  F getEntities(): Entity[]
+  F getChunkAt (Location loc): Chunk
+  F getEntities (): Entity[]
 C Block
-  F @(Location loc)
+  F @ (Location loc)
   P type: Material
   P location: Location
   F getLocation (): Location
   P damage: byte
-  F getChunk(): Chunk
-  F setType(Material m): void
-  F setDamage(byte damage): void
+  F getChunk (): Chunk
+  F setType (Material m): void
+  F setDamage (byte damage): void
 
 I Chunk
   F getBlocks (): Block[]
@@ -125,21 +126,21 @@ C Material
 C MaterialManager
   $P materials: {String, Material}
   $F register (String name, Material mat): Material
-  $F getRegisteredMaterials(): Material[]
+  $F getRegisteredMaterials (): Material[]
 
 # ServerAPI
 /net/cubition/api/server
 I Server
-  F getOnlinePlayers(): Player[]
-  F stop(): void
-  F stop(String msg): void
-  F getPlayer(int id): Player
-  F getPlayer(String name): Player
+  F getOnlinePlayers (): Player[]
+  F stop (): void
+  F stop (String msg): void
+  F getPlayer (int id): Player
+  F getPlayer (String name): Player
 C CubitionServer
   $P server: Server
-  $F setServer(Server s)
+  $F setServer (Server s)
   $F getServer
 I WorldLoader
-  F loadWorld(File directory): World
-  F worlds(): String[]
+  F loadWorld (File directory): World
+  F worlds (): String[]
 
