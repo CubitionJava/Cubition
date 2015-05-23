@@ -31,8 +31,8 @@ E ChatColor
   - PURPLE (0x10111)
   - LIGHT_PURPLE (0x11000)
   
-  P dat: byte
-  F @ (byte dat)
+  P dat: int
+  F @ (int dat)
 C FormattedMessagePart
   P color : ChatColor
   P underlined, strikethrough, bold, italic: boolean
