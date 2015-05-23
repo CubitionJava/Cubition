@@ -30,7 +30,7 @@ E ChatColor
   - DARK_PURPLE (0x10110)
   - PURPLE (0x10111)
   - LIGHT_PURPLE (0x11000)
-  
+
   P dat: int
   F @ (int dat)
 C FormattedMessagePart
@@ -38,8 +38,9 @@ C FormattedMessagePart
   P underlined, strikethrough, bold, italic: boolean
 C FormattedMessage
   P parts : FormattedMessagePart[]
-  F @ (String message, boolean json)
-  F @ (String message)
+  F @ (String... message)
+  F @ (boolean json, String... message)
+  F @ (FormattedMessagePart... message)
 I MessageReceiver
   F sendMessage (String msg): void
   F sendMessage (FormattedMessage msg): void
@@ -50,6 +51,7 @@ I Entity
   F getLocation (): void
   F teleport (Entity e): void
   F teleport (Location loc): void
+  F remove (): void
 I Creature : Entity
   F getName ()
   F getMaxHealth (): int
@@ -63,13 +65,12 @@ C Location
   P yaw, pitch: float
   P world: World
   F @ (World w, double x, double y, double z)
-  F @ (World w, doule x, double y, double z, float yaw, float pitch)
+  F @ (World w, double x, double y, double z, float yaw, float pitch)
   F add (double x, double y, double z)
-  F add (double x, double y, double z, float yaw, float pitch)
   F add (float yaw, float pitch)
+  F add (double x, double y, double z, float yaw, float pitch)
   F getWorld (): World
 E Direction
-
   - NORTH (0)
   - EAST (1)
   - SOUTH (2)
@@ -128,6 +129,15 @@ C MaterialManager
   $F register (String name, Material mat): Material
   $F getRegisteredMaterials (): Material[]
 
+I Mod
+  F getDataFolder (): File
+  ##TODO: More
+
+I ModManager
+  F loadMod (String mod): Mod
+  F unloadMod (Mod mod): Mod
+  F mods (): Mod[]
+
 # ServerAPI
 /net/cubition/api/server
 I Server
@@ -143,4 +153,3 @@ C CubitionServer
 I WorldLoader
   F loadWorld (File directory): World
   F worlds (): String[]
-
