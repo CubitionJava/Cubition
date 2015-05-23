@@ -21,7 +21,6 @@
         <module>server</module>
         <module>bootstrap</module>
         <module>core</module>
-        <module>minecraft</module>
     </modules>
 
     <dependencies>

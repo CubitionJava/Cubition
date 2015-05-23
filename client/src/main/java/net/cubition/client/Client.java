@@ -3,9 +3,9 @@ package net.cubition.client;
 import java.io.File;
 import java.io.IOException;
 
-import com.badlogicgames.gdx.*;
+import com.badlogic.gdx.*;
 
-public class Client {
+public class Client extends ApplicationAdapter {
 
 	protected final static String LIB_PATH = System.getenv("USERPROFILE")
 			+ File.separator + "Cubition";
@@ -13,8 +13,8 @@ public class Client {
 	protected final static File LIB_FOLDER = new File (LIB_PATH);
 	protected final static File SETTINGS_FILE = new File (LIB_FOLDER, "settings");
 
-	
-	public static void main (String[] args)
+	@Override
+	public void create ()
 	{
 		// Startup
 		// No need for existence checking, Java does this for us.
@@ -29,11 +29,13 @@ public class Client {
 		}
 		
 		Settings.load(SETTINGS_FILE);
-
-		// .. do GL things
 	}
-	
-	public static void tick () {
+
+	@Override
+	public void render () {
+		// Back color = black
+		Gdx.gl.glClearColor(0, 0, 0, 0);
+		Gdx.gl.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
 	}
 	
 }
