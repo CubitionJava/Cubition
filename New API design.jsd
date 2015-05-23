@@ -92,11 +92,11 @@ I Region
   F isInside (Location test): boolean
   F getBlocksInside (): Blocks
   
-C 3DRegion : Region
+C Region3D : Region
   P pos1, pos2: Location
   F @ (Location pos1, Location pos2)
 
-C 2DRegion : Region
+C Region2D : Region
   F @ (Location pos1, Location pos2)
 
 C ItemStack
@@ -166,6 +166,9 @@ C BlockType
   P flamable: boolean
   P blastResistance: float
 
+I WorldLoader
+  F loadWorld (File directory): World
+
 # ServerAPI
 /net/cubition/api/server
 I Server
@@ -182,6 +185,3 @@ C CubitionServer
   $F getServer (): Server
   $F getWorldLoader (): WorldLoader
   $F setWorldLoader (WorldLoader loader)
-
-I WorldLoader
-  F loadWorld (File directory): World

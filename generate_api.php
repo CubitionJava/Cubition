@@ -16,7 +16,7 @@ header ('Content-type: text');
 $start = microtime ();
 
 # Function to display errors
-function exc($t,$l='') { exit ('<b>Compilation error:</b> '. $t .($l!=''?' (on line '.$l.')':'')); }
+function exc($t,$l='') { exit ('Compilation error: '. $t .($l!=''?' (on line '.$l.')':'')); }
 
 # Grab schema
 $input = file_get_contents ($inputFile);
@@ -49,40 +49,48 @@ foreach (StringUtils::splitByLine ($input) as $lnum => $line) {
 		
 		# Class
 		elseif ($line [0] == 'C') {
-			# Pointermove
-			if ($scope != '')
-				$qjs [$curr->name] = $curr;
+			pointermove ();
 			
 			# Define new class
 			$scope = 'class';
 			$curr = new QJClass;
-			$curr->name = trim (StringUtils::untilFirst (':', $d));
+			$curr->name = trim (StringUtils::untilFirst ('=', StringUtils::untilFirst (':', $d)));
+			
+			if (is_numeric($curr->name [0]))
+				exc ('Cannot start a class name with a number', $lnum);
+			
+			$curr->extends = trim (StringUtils::untilFirst (':', StringUtils::fromFirst ('=', $d)));
+			$curr->implements = cln (StringUtils::fromFirst (':', $d));
 			$curr->ns = $ns;
 		}
 		
 		# Interface
 		elseif ($line [0] == 'I') {
-			# Pointermove
-			if ($scope != '')
-				$qjs [$curr->name] = $curr;
+			pointermove ();
 			
 			# Define new interface
 			$scope = 'interface';
 			$curr = new QJInterface;
 			$curr->name = trim(StringUtils::untilFirst (':', $d));
+			
+			if (is_numeric($curr->name [0]))
+				exc ('Cannot start a interface name with a number', $lnum);
+			
 			$curr->extends += cln(trim(StringUtils::fromFirst (':', $d)));
 			$curr->ns = $ns;
 		}
 		
 		# Enum
 		elseif ($line [0] == 'E') {
-			# Pointermove
-			if ($scope != '')
-				$qjs [$curr->name] = $curr;
+			pointermove ();
 			
 			$scope = 'enum';
 			$curr = new QJEnum;
 			$curr->name = trim($d);
+			
+			if (is_numeric($curr->name [0]))
+				exc ('Cannot start an enum name with a number', $lnum);
+			
 			$curr->ns = $ns;
 		}
 		
@@ -94,8 +102,17 @@ foreach (StringUtils::splitByLine ($input) as $lnum => $line) {
 				# Define new method
 				$m = new QJMethod;
 				$m->name = trim(StringUtils::untilFirst ('(', $d));
+				
+				if (is_numeric($m->name [0]))
+					exc ('Cannot start a function name with a number', $lnum);
+				
 				$m->args ($d);
-				$m->result = trim(StringUtils::fromLast (':', $d));
+				$m->return = trim(StringUtils::fromLast (':', $d));
+				$len = strlen($m->return);
+				if ($len > 4)
+					if ($m->return [0] == '{' && $m->return [$len - 1] == '}')
+						$m->return = 'HashMap<'.substr($m->return, 1, -1).'>';
+				
 				$m->static = $static;
 				$m->master = $curr->name;
 				
@@ -111,7 +128,18 @@ foreach (StringUtils::splitByLine ($input) as $lnum => $line) {
 			# Must be inside a class or enum
 			if ($scope == 'class' || $scope == 'enum')
 			{
-				$curr->properties [trim(StringUtils::untilFirst (':', $d))] = StringUtils::fromFirst (':', $d);
+				$type = trim (StringUtils::fromFirst (':', $d));
+				$len = strlen($type);
+				if ($len > 4)
+					if ($type [0] == '{' && $type [$len - 1] == '}')
+						$type = 'HashMap<'.substr($type, 1, -1).'>';
+				
+				$name = trim(StringUtils::untilFirst (':', $d));
+				
+				if (is_numeric($name [0]))
+					exc ('Cannot start a property name with a number', $lnum);
+				
+				$curr->properties [$name] = $type;
 			}
 			else
 				exc ('Cannot define a property outside a class', $lnum);
@@ -131,6 +159,8 @@ foreach (StringUtils::splitByLine ($input) as $lnum => $line) {
 			exc('Token "'. $line [0] .'" not recognized', $lnum);
 	}
 }
+
+pointermove ();
 
 # Debug log
 foreach ($qjs as $qj)
@@ -189,7 +219,16 @@ class QJClass {
 		if ($this->ns != '')
 			$out .= 'package '. $this->ns .';'.PHP_EOL.PHP_EOL;
 		
-		$out .= 'class '. $this->name .($this->extends != '' ? ' extends '. $this->extends : '').' {'.PHP_EOL;
+		$out .= 'class '. $this->name;
+		$out .= ($this->extends != ''
+				? ' extends '. $this->extends
+				: ''
+				);
+		$out .= (count ($this->implements) > 0
+				? ' implements '. implode (', ', $this->implements)
+				: ''
+				);
+		$out .= ' {'. PHP_EOL;
 		foreach ($this->properties as $prop => $type)
 			$out .= "\tpublic ". $type .' '. $prop . ';'. PHP_EOL;
 		
@@ -221,6 +260,11 @@ class QJEnum extends QJCLass {
 		foreach ($this->properties as $prop => $type)
 			$out .= "\tpublic ". $type .' '. $prop . ';'. PHP_EOL;
 		
+		# Fix method visibility
+		foreach ($this->methods as $method)
+			if ($method->name == '@' && $method->visibility == 'public')
+				$method->visibility = '';
+		
 		# Methods
 		foreach ($this->methods as $method)
 			$out .= "\t". ((string) $method) . ' {'. PHP_EOL . "\t\t// TODO: Add method body" . PHP_EOL . ($method->name != '@' && $method->return != 'void' ? "\t\treturn null;".PHP_EOL:'')."\t}" . PHP_EOL;
@@ -247,7 +291,11 @@ class QJMethod {
 	}
 	
 	public function __toString () {
-		$out = $this->visibility .' '. ($this->name == '@' ? $this->master : ($this->static ? 'static ' : ''). $this->return .' '. $this->name) . ' (';
+		$out  = ($this->visibility != '' ? $this->visibility .' ' : '');
+		$out .= ($this->name == '@'
+					? $this->master
+					: ($this->static ? 'static ' : '') . $this->return .' '. $this->name);
+		$out .= ' (';
 		$argout = '';
 		foreach ($this->arguments as $arg => $type)
 			$argout .= ($argout == '' ? '' : ', ') . $type .' '. $arg;
@@ -261,6 +309,13 @@ function cln ($in) {
 	foreach ($ps as $k => $v) $ps [$k] = trim ($v);
 	foreach ($ps as $k => $v) if ($v == '') unset ($ps [$k]);
 	return $ps;
+}
+
+function pointermove () {
+	global $scope, $qjs, $curr;
+	
+	if ($scope != '')
+		$qjs [$curr->name] = $curr;
 }
 
 
