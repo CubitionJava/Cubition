@@ -11,6 +11,8 @@ $outDir = 'newapi/src/main/java';
 // Do not change anything below this line
 // --------------------------------------
 
+header ('Content-type: text');
+
 $start = microtime ();
 
 # Function to display errors
@@ -131,7 +133,6 @@ foreach (StringUtils::splitByLine ($input) as $lnum => $line) {
 }
 
 # Debug log
-echo '<pre>';
 foreach ($qjs as $qj)
 {
 	# Get the path for this class/interface/enum/whevver
@@ -146,7 +147,7 @@ foreach ($qjs as $qj)
 	else
 		echo 'Could not create file: '. $qj->name .'.java' . PHP_EOL;
 }
-echo '</pre>' . PHP_EOL . 'Finished in <b>'. (microtime () - $start) .'</b> seconds';
+echo  PHP_EOL . 'Finished in '. (microtime () - $start) .' seconds';
 
 // Language elements: change output here
 // -------------------------------------
