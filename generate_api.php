@@ -6,6 +6,7 @@
 // 3. php -f generate_api.php
 
 $inputFile = 'New API design.jsd';
+$outDir = 'newapi/src/main/java';
 
 // Do not change anything below this line
 // --------------------------------------
@@ -352,4 +353,3 @@ class StringUtils {
 	}
 	
 }
-
