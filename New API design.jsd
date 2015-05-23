@@ -1,5 +1,6 @@
 # Java Structure Design file containing the structure of the new API
 # This code will fed to a preprocessir which generates a java base
+# Preprocessor:  http://www.github.com/Xesau/JSD
 # Syntax checker: http://me.xesau.eu/jsd_syntax_checker.php
 
 # Global API
@@ -30,36 +31,43 @@ E ChatColor
   - DARK_PURPLE (0x10110)
   - PURPLE (0x10111)
   - LIGHT_PURPLE (0x11000)
-
   P dat: int
   F @ (int dat)
+
 C FormattedMessagePart
   P color : ChatColor
   P underlined, strikethrough, bold, italic: boolean
+
 C FormattedMessage
   P parts : FormattedMessagePart[]
   F @ (String... message)
   F @ (boolean json, String... message)
   F @ (FormattedMessagePart... message)
+
 I MessageReceiver
   F sendMessage (String msg): void
   F sendMessage (FormattedMessage msg): void
+
 I CommandSender : MessageReceiver
   F dispatchCommand (String cmd): void
   F dispatchCommand (String cmd, String[] args)
+
 I Entity
   F getLocation (): void
   F teleport (Entity e): void
   F teleport (Location loc): void
   F remove (): void
+
 I Creature : Entity
   F getName ()
   F getMaxHealth (): int
   F getHealth (): int
   F setHealth (int health): void
+
 I Player : CommandSender, Creature
   F getFoodLevel (): int
   F setFoodLevel (int level): void
+
 C Location
   P x, y, z: double
   P yaw, pitch: float
@@ -70,14 +78,15 @@ C Location
   F add (float yaw, float pitch)
   F add (double x, double y, double z, float yaw, float pitch)
   F getWorld (): World
+
 E Direction
   - NORTH (0)
   - EAST (1)
   - SOUTH (2)
   - WEST (3)
-
   P num: int
   F @ (int num)
+
 I Region
   F center (): Location
   F isInside (Location test): boolean
@@ -89,6 +98,7 @@ C 3DRegion : Region
 
 C 2DRegion : Region
   F @ (Location pos1, Location pos2)
+
 C ItemStack
   F @ (Material material)
   F @ (Material material, int amount)
@@ -98,13 +108,16 @@ C ItemStack
   P damage: byte
   P data: ItemMeta
   F getItemMeta (): ItemMeta
+
 C ItemMeta
   P displayName: String
   ##TODO: More attributes
+
 I World
   F getBlockAt (Location loc): Block
   F getChunkAt (Location loc): Chunk
   F getEntities (): Entity[]
+
 C Block
   F @ (Location loc)
   P type: Material
@@ -131,12 +144,27 @@ C MaterialManager
 
 I Mod
   F getDataFolder (): File
+  F getName (): String
+  F getAuthor (): String
+  F initialize (): void
   ##TODO: More
 
 I ModManager
   F loadMod (String mod): Mod
   F unloadMod (Mod mod): Mod
   F mods (): Mod[]
+
+C BlockTypeManager
+  P blocktypes: {String, BlockType}
+  F register (BlockType info)
+
+C BlockType
+  P mod: Mod
+  P name: String
+  P type: Material
+  P damage: byte
+  P flamable: boolean
+  P blastResistance: float
 
 # ServerAPI
 /net/cubition/api/server
@@ -146,10 +174,14 @@ I Server
   F stop (String msg): void
   F getPlayer (int id): Player
   F getPlayer (String name): Player
+
 C CubitionServer
   $P server: Server
+  $P worldLoader: WorldLoader
   $F setServer (Server s)
-  $F getServer
+  $F getServer (): Server
+  $F getWorldLoader (): WorldLoader
+  $F setWorldLoader (WorldLoader loader)
+
 I WorldLoader
   F loadWorld (File directory): World
-  F worlds (): String[]
