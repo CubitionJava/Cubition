@@ -4,7 +4,7 @@
 	<inherits name='com.badlogic.gdx.backends.gdx_backends_gwt' />
 	<inherits name='com.badlogic.gdx.physics.box2d.box2d-gwt' />
 
-    <inherits name='com.nayaverdier.gdx.GdxDefinition' />
+    <inherits name='net.cubition.cubition.GdxDefinition' />
     
     <collapse-all-properties />
     

@@ -1,16 +1,16 @@
-package com.nayaverdier.gdx.android;
+package net.cubition.cubition.android;
 
 import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.nayaverdier.gdx.GDXGame;
+import net.cubition.cubition.Cubition;
 
 public class AndroidLauncher extends AndroidApplication {
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-		initialize(new GDXGame(), config);
+		initialize(new Cubition(), config);
 	}
 }

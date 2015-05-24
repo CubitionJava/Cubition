@@ -7,8 +7,8 @@ gwt {
     minHeapSize="1G"
 
     src = files(file("src/")) // Needs to be in front of "modules" below.
-    modules 'com.nayaverdier.gdx.GdxDefinition'
-    devModules 'com.nayaverdier.gdx.GdxDefinitionSuperdev'
+    modules 'net.cubition.cubition.GdxDefinition'
+    devModules 'net.cubition.cubition.GdxDefinitionSuperdev'
     project.webAppDirName = 'webapp'
 
     compiler {

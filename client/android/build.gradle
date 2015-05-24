@@ -59,7 +59,7 @@ task run(type: Exec) {
     }
 
     def adb = path + "/platform-tools/adb"
-    commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.nayaverdier.gdx.android/com.nayaverdier.gdx.android.AndroidLauncher'
+    commandLine "$adb", 'shell', 'am', 'start', '-n', 'net.cubition.cubition.android/net.cubition.cubition.android.AndroidLauncher'
 }
 
 // sets up the Android Eclipse project, using the old Ant based build.

@@ -1,9 +1,9 @@
-package com.nayaverdier.gdx.client;
+package net.cubition.cubition.client;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import com.nayaverdier.gdx.GDXGame;
+import net.cubition.cubition.Cubition;
 
 public class HtmlLauncher extends GwtApplication {
 
@@ -14,6 +14,6 @@ public class HtmlLauncher extends GwtApplication {
 
         @Override
         public ApplicationListener getApplicationListener () {
-                return new GDXGame();
+                return new Cubition();
         }
 }

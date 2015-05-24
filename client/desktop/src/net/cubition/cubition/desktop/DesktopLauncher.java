@@ -1,12 +1,12 @@
-package com.nayaverdier.gdx.desktop;
+package net.cubition.cubition.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.nayaverdier.gdx.GDXGame;
+import net.cubition.cubition.Cubition;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		new LwjglApplication(new GDXGame(), config);
+		new LwjglApplication(new Cubition(), config);
 	}
 }

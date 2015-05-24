@@ -4,7 +4,7 @@ sourceCompatibility = '1.7'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 ext {
-	mainClassName = "com.nayaverdier.gdx.IOSLauncher"
+	mainClassName = "net.cubition.cubition.IOSLauncher"
 }
 
 launchIPhoneSimulator.dependsOn build
