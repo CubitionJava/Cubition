@@ -16,10 +16,10 @@ header ('Content-type: text');
 $start = microtime ();
 
 # Function to display errors
-function exc($t,$l='') { exit ('Compilation error: '. $t .($l!=''?' (on line '.$l.')':'')); }
-
+function exc($t,$l='') {global $lines;exit ('Compilation error: '. $t .($l!=''?' (on line '.$l.')'.PHP_EOL.PHP_EOL.$lines[$l-1]:'')); }
 # Grab schema
 $input = file_get_contents ($inputFile);
+$lines = StringUtils::splitByLine ($input);
 
 # Define some variables
 $scope = '';
@@ -28,9 +28,10 @@ $qjs = array ();
 $curr = null;
 
 # Go over each line
-foreach (StringUtils::splitByLine ($input) as $lnum => $line) {
+foreach ($lines as $lnum => $line) {
 	# Remove spacing
 	$line = trim ($line);
+	$lnum += 1;
 
 	# No empty lines or comments
 	if ($line != '' && $line [0] != '#') {
