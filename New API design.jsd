@@ -149,10 +149,10 @@ I Mod
   F initialize (): void
   ##TODO: More
 
-I ModManager
-  F loadMod (String mod): Mod
-  F unloadMod (Mod mod): Mod
-  F mods (): Mod[]
+C ModManager
+  $F loadMod (String mod): Mod
+  $F unloadMod (Mod mod): Mod
+  $F mods (): Mod[]
 
 C BlockTypeManager
   P blocktypes: {String, BlockType}
