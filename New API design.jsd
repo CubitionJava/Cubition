@@ -133,10 +133,10 @@ I Mod
   F getDataFolder (): File
   ##TODO: More
 
-I ModManager
-  F loadMod (String mod): Mod
-  F unloadMod (Mod mod): Mod
-  F mods (): Mod[]
+C ModManager
+  $F loadMod (String mod): Mod
+  $F unloadMod (Mod mod): Mod
+  $F mods (): Mod[]
 
 # ServerAPI
 /net/cubition/api/server
