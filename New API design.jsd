@@ -147,16 +147,24 @@ I Mod
   F getName (): String
   F getAuthor (): String
   F initialize (): void
-  ##TODO: More
+  F deinitialize (): void
+
+C EventManager
+  $P registeredEvents: Event[]
 
 C ModManager
-  $F loadMod (String mod): Mod
+  $P loader: ModLoader
+  $F loadMod (File mod): Mod
   $F unloadMod (Mod mod): Mod
   $F mods (): Mod[]
 
+I ModLoader
+  F getMod (File mod): Mod
+  F availableMods (): String[]
+
 C BlockTypeManager
-  P blocktypes: {String, BlockType}
-  F register (BlockType info)
+  $P blocktypes: {String, BlockType}
+  $F register (BlockType info)
 
 C BlockType
   P mod: Mod

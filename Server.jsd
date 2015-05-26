@@ -1,0 +1,8 @@
+# Java Structure Design file containing the structure of the server API
+# This code will fed to a preprocessir which generates a java base
+# Preprocessor:  http://www.github.com/Xesau/JSD
+# Syntax checker: http://me.xesau.eu/jsd_syntax_checker.php
+
+# Server
+/net/cubition/server
+
