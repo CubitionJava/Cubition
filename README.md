@@ -31,5 +31,3 @@ Contributions
 -------------
 
 We welcome contributions to the project, via pull requests.
-
-(Quick push to test workspace)
