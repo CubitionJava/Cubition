@@ -27,6 +27,8 @@ To compile:
 - Linux/Mac/platforms with Bash: Run `./compile.sh` in the source root. This generates Javadoc for the project automatically.
 - The packaged results will be in the `out/` directory.
 
+**If you are wanting to compile the project, please remove the client module from the main pom.xml as it doesn't have a pom.xml, spitting out an error in your console when compiling it.
+
 Contributions
 -------------
 
