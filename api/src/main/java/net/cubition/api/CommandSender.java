@@ -1,7 +1,6 @@
 package net.cubition.api;
 
-import java.util.HashMap;
-interface CommandSender extends MessageReceiver {
+public interface CommandSender extends MessageReceiver {
 	public void dispatchCommand (String cmd);
-	public  dispatchCommand (String cmd, String[] args);
+	public void dispatchCommand (String cmd, String[] args);
 }

@@ -1,7 +1,7 @@
 package net.cubition.api;
 
-import java.util.HashMap;
-interface Mod {
+import java.io.File;
+public interface Mod {
 	public File getDataFolder ( );
 	public String getName ( );
 	public String getAuthor ( );

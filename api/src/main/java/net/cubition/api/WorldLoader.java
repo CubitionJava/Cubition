@@ -1,6 +1,7 @@
 package net.cubition.api;
 
-import java.util.HashMap;
-interface WorldLoader {
+import java.io.File;
+
+public interface WorldLoader {
 	public World loadWorld (File directory);
 }

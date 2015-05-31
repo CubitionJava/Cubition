@@ -1,25 +1,35 @@
 package net.cubition.api;
 
-import java.util.HashMap;
-class Block {
-	public Material type;
-	public Location location;
-	public byte damage;
+public class Block {
+	private Location location;
+	private World world;
+	
 	public Block (Location loc) {
-		// TODO: Add method body
+		this.location = loc;
+		this.world = loc.getWorld();
 	}
+	
 	public Location getLocation ( ) {
-		// TODO: Add method body
-		return null;
+		return location;
 	}
-	public Chunk getChunk ( ) {
-		// TODO: Add method body
-		return null;
+	
+	public Material getType () {
+		return world.getBlockTypeAt (location);
 	}
+	
+	public byte getDamate () {
+		return world.getBlockDamageAt (location);
+	}
+	
+	public Chunk getChunk () {
+		return world.getChunkAt(location);
+	}
+	
 	public void setType (Material m) {
-		// TODO: Add method body
+		world.setBlockTypeAt(location, m);
 	}
+	
 	public void setDamage (byte damage) {
-		// TODO: Add method body
+		world.setBlockDamageAt(location, damage);
 	}
 }

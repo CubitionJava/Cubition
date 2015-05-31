@@ -1,7 +1,6 @@
 package net.cubition.api;
 
-import java.util.HashMap;
-class BlockType {
+public class BlockType {
 	public Mod mod;
 	public String name;
 	public Material type;

@@ -17,10 +17,10 @@
 
     <modules>
         <module>api</module>
-        <module>client</module>
+        
         <module>server</module>
         <module>bootstrap</module>
-        <module>core</module>
+        
     </modules>
 
     <dependencies>

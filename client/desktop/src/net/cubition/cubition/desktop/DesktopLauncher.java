@@ -1,7 +1,5 @@
 package net.cubition.cubition.desktop;
 
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import net.cubition.cubition.Cubition;
 
 public class DesktopLauncher {

@@ -1,7 +1,7 @@
 package net.cubition.api;
 
-import java.util.HashMap;
-class FormattedMessagePart {
+public class FormattedMessagePart {
 	public ChatColor color;
-	public boolean underlined, strikethrough, bold, italic;
+	public boolean underlined = false, strikethrough = false, bold = false, italic = false;
+	public String text = "";
 }

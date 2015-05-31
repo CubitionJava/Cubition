@@ -1,7 +1,11 @@
 package net.cubition.api;
 
-import java.util.HashMap;
-interface Player extends CommandSender, Creature {
+public interface Player extends CommandSender, Creature {
+	public int getID ();
+	
 	public int getFoodLevel ( );
 	public void setFoodLevel (int level);
+	
+	public void kick ();
+	public void kick(String message);
 }

@@ -1,7 +1,6 @@
 package net.cubition.api;
 
-import java.util.HashMap;
-enum Direction {
+public enum Direction {
 	NORTH (0),
 	EAST (1),
 	SOUTH (2),

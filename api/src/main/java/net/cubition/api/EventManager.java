@@ -1,6 +1,5 @@
 package net.cubition.api;
 
-import java.util.HashMap;
-class EventManager {
+public class EventManager {
 	public Event[] registeredEvents;
 }

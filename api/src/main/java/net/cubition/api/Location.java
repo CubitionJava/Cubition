@@ -1,7 +1,6 @@
 package net.cubition.api;
 
-import java.util.HashMap;
-class Location {
+public class Location {
 	public double x, y, z;
 	public float yaw, pitch;
 	public World world;
@@ -11,15 +10,15 @@ class Location {
 	public Location (World w, double x, double y, double z, float yaw, float pitch) {
 		// TODO: Add method body
 	}
-	public  add (double x, double y, double z) {
+	public Location add (double x, double y, double z) {
 		// TODO: Add method body
 		return null;
 	}
-	public  add (float yaw, float pitch) {
+	public Location add (float yaw, float pitch) {
 		// TODO: Add method body
 		return null;
 	}
-	public  add (double x, double y, double z, float yaw, float pitch) {
+	public Location add (double x, double y, double z, float yaw, float pitch) {
 		// TODO: Add method body
 		return null;
 	}

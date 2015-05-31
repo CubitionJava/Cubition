@@ -1,7 +1,6 @@
 package net.cubition.api;
 
-import java.util.HashMap;
-enum ChatColor {
+public enum ChatColor {
 	BLACK (0x0000),
 	GREY_75 (0x00001),
 	GREY_50 (0x00010),

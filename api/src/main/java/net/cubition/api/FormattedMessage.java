@@ -1,7 +1,6 @@
 package net.cubition.api;
 
-import java.util.HashMap;
-class FormattedMessage {
+public class FormattedMessage {
 	public FormattedMessagePart[] parts;
 	public FormattedMessage (String... message) {
 		// TODO: Add method body

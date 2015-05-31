@@ -1,8 +1,5 @@
 package net.cubition.cubition.client;
 
-import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.backends.gwt.GwtApplication;
-import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
 import net.cubition.cubition.Cubition;
 
 public class HtmlLauncher extends GwtApplication {

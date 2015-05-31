@@ -1,8 +1,7 @@
 package net.cubition.api;
 
-import java.util.HashMap;
-interface Creature extends Entity {
-	public  getName ( );
+public interface Creature extends Entity {
+	public String getName ( );
 	public int getMaxHealth ( );
 	public int getHealth ( );
 	public void setHealth (int health);
