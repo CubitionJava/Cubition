@@ -1,7 +1,7 @@
 package net.cubition.api;
 
-public class Material {
-	public Mod mod;
-	public String translatableName;
-	public String itemTextureName;
+public interface Material {
+	public Mod getMod ();
+	public String getTranslatableName (byte damage);
+	public String getItemTextureName (byte damage);
 }
