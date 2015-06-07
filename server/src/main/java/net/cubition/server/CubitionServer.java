@@ -1,17 +1,16 @@
 package net.cubition.server;
 
+import net.cubition.api.ModManager;
+import net.cubition.api.Player;
+import net.cubition.api.server.Server;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
-
-import net.cubition.api.ModManager;
-import net.cubition.api.Player;
-import net.cubition.api.server.Server;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class CubitionServer extends Server {
 
@@ -24,7 +23,7 @@ public class CubitionServer extends Server {
 	
 	@Override
 	public Player[] getOnlinePlayers() {
-		return onlinePlayers.toArray(new Player[0]);
+		return onlinePlayers.toArray(new Player[onlinePlayers.size()]);
 	}
 	
 	public static void main (String [] args) {

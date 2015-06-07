@@ -1,13 +1,13 @@
 package net.cubition.api;
 
 public interface Player extends CommandSender, Creature {
-	public int getID ();
+	int getID();
 	
-	public int getFoodLevel ( );
-	public void setFoodLevel (int level);
+	int getFoodLevel();
+	void setFoodLevel(int level);
 	
-	public void kick ();
-	public void kick(String message);
+	void kick();
+	void kick(String message);
 	
-	public Inventory getInventory ();
+	Inventory getInventory();
 }
