@@ -16,7 +16,7 @@
         <dependency>
             <groupId>net.cubition</groupId>
             <artifactId>api</artifactId>
-            <version>${version}</version>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

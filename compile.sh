@@ -2,31 +2,40 @@
 # A very basic Cubition compile script for Mac + Linux
 # This expects Maven is available in the environment under 'mvn'.
 
-if [ `uname -s` == Darwin ]
-then
+# export JAVA_HOME on Mac OS X
+if [ `uname -s` == Darwin ]; then
     export JAVA_HOME=`/usr/libexec/java_home`
 fi
 
-# Check for mvn existance
-type mvn >/dev/null 2>&1 || { echo >&2 "I couldn't find Maven in the environment via the command 'mvn'. Aborting..."; exit 1; }
+# Check for maven
+export MVN=`which mvn`
 
-# Clean up environment
-echo Cleaning up...
-mvn clean
+if [[ -z ${MVN} ]]; then
+    printf 'Error: Maven is not installed in the environment.\n'
+    printf '    Expected Maven to be installed as `mvn`\n'
+    printf '    You can install this program from https://maven.apache.org/\n'
+    exit 1
+fi
 
-# Create directories for Javadocs
-echo Building directory tree...
-mkdir -p api/target/site/apidocs
-mkdir -p client/target/site/apidocs
-mkdir -p server/target/site/apidocs
-mkdir -p bootstrap/target/site/apidocs
-mkdir -p core/target/site/apidocs
-mkdir -p out/javadoc-api
-mkdir -p out/javadoc-client
-mkdir -p out/javadoc-server
-mkdir -p out/javadoc-bootstrap
-mkdir -p out/javadoc-core
+# Clean up environment (if needed)
+if [[ -e build ]]; then
+    echo "Cleaning up from last build..."
+    mvn clean > /dev/null 2>&1
+    rm -rf build
+    rm -rf */target
+    rm -rf */dependency-reduced-pom.xml
+fi
 
-# Produce final product
-echo Running Maven...
-mvn package javadoc:javadoc
+# Make sure user didn't just request clean
+if [[ ${1} != clean ]]; then
+    # Build all projects
+    echo "Building Cubition..."
+    env mvn package javadoc:javadoc
+
+    # Symlink javadocs into build
+    function linkdir { ln -s ../${1}/target/site/apidocs build/javadoc-${1}; }
+
+    linkdir api
+    linkdir bootstrap
+    linkdir server
+fi

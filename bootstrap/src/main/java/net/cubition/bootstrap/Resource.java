@@ -1,5 +1,6 @@
 package net.cubition.bootstrap;
 
+import org.slf4j.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
