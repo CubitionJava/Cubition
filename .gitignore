@@ -1,5 +1,3 @@
-_old_api/
-
 # Created by https://www.gitignore.io
 
 ### Java ###
@@ -25,7 +23,7 @@ pom.xml.versionsBackup
 pom.xml.next
 release.properties
 dependency-reduced-pom.xml
-
+build/
 
 ### Eclipse ###
 *.pydevproject
