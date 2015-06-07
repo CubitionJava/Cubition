@@ -8,4 +8,6 @@ public interface Player extends CommandSender, Creature {
 	
 	public void kick ();
 	public void kick(String message);
+	
+	public Inventory getInventory ();
 }
