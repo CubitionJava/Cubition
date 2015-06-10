@@ -1,21 +1,23 @@
 package net.cubition.cubition;
 
+import net.cubition.cubition.view.LoadingScreenView;
+
 public class Cubition extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img;
+	
+	public View view;
 	
 	@Override
 	public void create () {
-		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		// TODO Load client settings
+		
+		// Load view
+		view = new LoadingScreenView ();
 	}
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();
+		// Render the current view, nothing special
+		// Nothing needs to be passed to .render(). Gtx is static public
+		view.render ();
 	}
 }
