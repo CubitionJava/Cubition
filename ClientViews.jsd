@@ -1,0 +1,6 @@
+/net/cubition/cubition/views
+C SettingsView : net.cubition.cubition.View
+  F render (): void
+
+C InventoryView : net.cubition.cubition.View
+  F @(IngameView view, net.cubition.api.Inventory)
