@@ -2,7 +2,7 @@ buildscript {
     repositories {
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-        jcenter()
+        maven { url 'http://dl.bintray.com/steffenschaefer/maven' }
     }
     dependencies {
         classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.6'
@@ -100,6 +100,10 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
     }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.0'
 }
 
 tasks.eclipse.doLast {
