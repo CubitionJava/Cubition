@@ -33,9 +33,12 @@ if [[ ${1} != clean ]]; then
     env mvn package javadoc:javadoc
 
     # Symlink javadocs into build
-    function linkdir { ln -s ../${1}/target/site/apidocs build/javadoc-${1}; }
+    function linkdir {
+        ln -s ../${1}/target/site/apidocs build/javadoc-${1}
+    }
 
     linkdir api
     linkdir bootstrap
     linkdir server
+    linkdir client
 fi

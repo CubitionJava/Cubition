@@ -14,8 +14,8 @@
     <modules>
         <module>api</module>
         <module>server</module>
-        <module>bootstrap</module>
         <module>client</module>
+        <module>bootstrap</module>
     </modules>
 
     <dependencies>

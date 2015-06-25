@@ -15,9 +15,7 @@
             <artifactId>api</artifactId>
             <version>${project.version}</version>
         </dependency>
-
-        <!-- TODO: Add LWJGL 3 if we're going ot use that-->
-
+        <!-- Get LWJGL 3.0 dependency -->
     </dependencies>
 
     <build>
@@ -43,7 +41,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>net.cubition.server.CubitionServer</mainClass>
+                            <mainClass>net.cubition.client.CubitionClient</mainClass>
                         </manifest>
                         <manifestEntries>
                             <Implementation-Title>Client</Implementation-Title>
@@ -70,7 +68,7 @@
                             </descriptorRefs>
                             <archive>
                                 <manifest>
-                                    <mainClass>net.cubition.server.CubitionServer</mainClass>
+                                    <mainClass>net.cubition.client.CubitionClient</mainClass>
                                 </manifest>
                             </archive>
                         </configuration>

@@ -5,8 +5,8 @@
 // 2. cd to this directory
 // 3. php -f generate_api.php
 
-$inputFile = 'New API design.jsd';
-$outDir = 'newapi/src/main/java';
+$inputFile = $argv[1];
+$outDir = $argv[2];
 
 // Do not change anything below this line
 // --------------------------------------
@@ -182,7 +182,7 @@ foreach ($qjs as $qj)
 	else
 		echo 'Could not create file: '. $qj->name .'.java' . PHP_EOL;
 }
-echo  PHP_EOL . 'Finished in '. (microtime () - $start) .' seconds';
+echo  PHP_EOL . 'Finished in '. (microtime () - $start) .' seconds' . "\n";
 
 // Language elements: change output here
 // -------------------------------------
