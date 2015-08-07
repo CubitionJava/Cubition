@@ -2,6 +2,7 @@ package net.cubition.client.view;
 
 import net.cubition.client.View;
 import de.matthiasmann.twl.utils.PNGDecoder;
+import de.matthiasmann.twl.utils.PNGDecoder.Format;
 import java.io.FileInputStream;
 import java.nio.ByteBuffer;
 
