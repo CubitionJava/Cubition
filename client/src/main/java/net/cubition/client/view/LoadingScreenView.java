@@ -11,9 +11,9 @@ public class LoadingScreenView implements View {
 		
 	@Override
 	public void render () {
-		FileInputStream in = new FileInputStream("logo.png");
-		
 		try {
+			FileInputStream in = new FileInputStream("logo.png");
+
 			PNGDecoder decoder = new PNGDecoder(in);
 			
 			System.out.println("width="+decoder.getWidth());
@@ -22,6 +22,10 @@ public class LoadingScreenView implements View {
 			ByteBuffer buf = ByteBuffer.allocateDirect(4*decoder.getWidth()*decoder.getHeight());
 			decoder.decode(buf, decoder.getWidth()*4, Format.RGBA);
 			buf.flip();
+		} catch (Exception ex) {
+			// TODO: Error handling.
+			// Something with file loading must have gone wrong
+		}
 		} finally {
 			in.close();
 		}
