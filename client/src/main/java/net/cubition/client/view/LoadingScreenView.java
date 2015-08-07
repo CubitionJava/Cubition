@@ -27,8 +27,11 @@ public class LoadingScreenView implements View {
 			// TODO: Error handling.
 			// Something with file loading must have gone wrong
 		} finally {
-			if (in != null)
+			try {
 				in.close();
+			} catch (Exception ex) {
+				// Just ignore
+			}
 		}
 	}
 	
