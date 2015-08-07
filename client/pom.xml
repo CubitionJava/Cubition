@@ -11,7 +11,7 @@
     
     <properties>
         <pngdecoder.version>1.0</pngdecoder.version>
-        <lwjgl.version>3.0</lwjgl.version>
+        <lwjgl.version>3.0.0b</lwjgl.version>
     </properties>
     <dependencies>
         <dependency>
@@ -25,16 +25,28 @@
             <version>${pngdecoder.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.lwjgl.lwjgl</groupId>
+            <groupId>org.lwjgl</groupId>
             <artifactId>lwjgl</artifactId>
             <version>${lwjgl.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.lwjgl.lwjgl</groupId>
-            <artifactId>lwjgl_util</artifactId>
+            <groupId>org.lwjgl</groupId>
+            <artifactId>lwjgl-platform</artifactId>
             <version>${lwjgl.version}</version>
+            <classifier>natives-windows</classifier>
         </dependency>
-        <!-- Get LWJGL 3.0 dependency -->
+        <dependency>
+            <groupId>org.lwjgl</groupId>
+            <artifactId>lwjgl-platform</artifactId>
+            <version>${lwjgl.version}</version>
+            <classifier>natives-osx</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.lwjgl</groupId>
+            <artifactId>lwjgl-platform</artifactId>
+            <version>${lwjgl.version}</version>
+            <classifier>natives-linux</classifier>
+        </dependency>
     </dependencies>
 
     <build>
