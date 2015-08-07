@@ -3,12 +3,14 @@ package net.cubition.client.view;
 import net.cubition.client.View;
 import de.matthiasmann.twl.utils.PNGDecoder;
 import java.io.FileInputStream;
+import java.nio.ByteBuffer;
+
 
 public class LoadingScreenView implements View {
 		
 	@Override
 	public void render () {
-		InputStream in = new FileInputStream("logo.png");
+		FileInputStream in = new FileInputStream("logo.png");
 		
 		try {
 			PNGDecoder decoder = new PNGDecoder(in);
