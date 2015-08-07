@@ -3,7 +3,7 @@
 // ==== HOW TO RUN ====
 // 1. Start your terminal/console
 // 2. cd to this directory
-// 3. php -f generate_api.php
+// 3. php -f generate_api.php <input file> <output dir>
 
 $inputFile = $argv[1];
 $outDir = $argv[2];
