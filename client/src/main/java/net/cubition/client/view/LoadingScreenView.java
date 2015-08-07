@@ -13,7 +13,7 @@ public class LoadingScreenView implements View {
 	public void render () {
 		FileInputStream in;
 		try {
-			FileInputStream in = new FileInputStream("logo.png");
+			in = new FileInputStream("logo.png");
 
 			PNGDecoder decoder = new PNGDecoder(in);
 			
