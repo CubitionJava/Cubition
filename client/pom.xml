@@ -11,7 +11,7 @@
     
     <properties>
         <pngdecoder.version>1.0</pngdecoder.version>
-        <lwjgl.version>3.0.0b</lwjgl.version>
+        <lwjgl.version>3.0.0b-SNAPSHOT</lwjgl.version>
     </properties>
     <dependencies>
         <dependency>
