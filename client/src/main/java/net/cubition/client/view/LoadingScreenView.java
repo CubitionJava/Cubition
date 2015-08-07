@@ -11,6 +11,7 @@ public class LoadingScreenView implements View {
 		
 	@Override
 	public void render () {
+		FileInputStream in;
 		try {
 			FileInputStream in = new FileInputStream("logo.png");
 
@@ -26,7 +27,8 @@ public class LoadingScreenView implements View {
 			// TODO: Error handling.
 			// Something with file loading must have gone wrong
 		} finally {
-			in.close();
+			if (in != null)
+				in.close();
 		}
 	}
 	
