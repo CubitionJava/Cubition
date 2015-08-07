@@ -1,6 +1,7 @@
 package net.cubition.client;
 
 import net.cubition.client.view.LoadingScreenView;
+import static org.lwjgl.opengl.GL11.*;
 
 public class CubitionClient {
 	
