@@ -35,6 +35,3 @@ public class LoadingScreenView implements View {
 				// Just ignore
 			}
 		}
-	}
-	
-}
