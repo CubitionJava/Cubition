@@ -23,13 +23,15 @@ public class LoadingScreenView implements View {
 			ByteBuffer buf = ByteBuffer.allocateDirect(4*decoder.getWidth()*decoder.getHeight());
 			decoder.decode(buf, decoder.getWidth()*4, Format.RGBA);
 			buf.flip();
+			
+			in.close();
 		} catch (Exception ex) {
 			// TODO: Error handling.
 			// Something with file loading must have gone wrong
 		} finally {
-			try {
-				in.close();
-			} catch (Exception ex) {
+			//try {
+				//in.close();
+			//catch (Exception ex) {
 				// Just ignore
 			}
 		}
