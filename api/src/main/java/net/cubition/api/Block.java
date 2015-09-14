@@ -17,7 +17,7 @@ public class Block {
 		return world.getBlockTypeAt (location);
 	}
 	
-	public byte getDamate () {
+	public byte getDamage () {
 		return world.getBlockDamageAt (location);
 	}
 	
