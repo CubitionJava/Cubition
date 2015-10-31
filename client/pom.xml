@@ -47,6 +47,12 @@
             <version>${lwjgl.version}</version>
             <classifier>natives-linux</classifier>
         </dependency>
+        <dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.14.0</version>
+			<scope>provided</scope>
+		</dependency>
     </dependencies>
 
     <build>
@@ -121,4 +127,5 @@
                 </snapshots>
             </repository>
     </repositories>
+    
 </project>
